@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>Anime Image Classification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout">
+        <!--<div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Material Design</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="">Home</a>
+                <a class="mdl-navigation__link" href="">Features</a>
+                <a class="mdl-navigation__link" href="">About Us</a>
+                <a class="mdl-navigation__link" href="">Log Out</a>
+            </nav>
+        </div>-->
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                <div class="wide-card mdl-card mdl-shadow--2dp" style="margin:0 auto; margin-top: 20px">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Help us label these images</h2>
+                    </div>
+                    <div class="mdl-card__media">
+                        <img src="thumb.jpg" border="0" alt="" width="100%" />
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Select all the options appearing in the image
+                    </div>
+                    <div style="padding:20px;padding-top:0">
+                        <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                          <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                          <span class="mdl-switch__label">Text</span>
+                        </label>
+
+                        <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                          <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                          <span class="mdl-switch__label">Logo</span>
+                        </label>
+
+                        <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                          <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                          <span class="mdl-switch__label">Empty</span>
+                        </label>
+
+                        <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                          <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                          <span class="mdl-switch__label">Character</span>
+                        </label>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Next</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
