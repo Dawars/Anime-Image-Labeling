@@ -7,9 +7,28 @@
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- You can use Open Graph tags to customize link previews.
+  Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url" content="http://animedata.azurewebsites.net/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Anime dataset labeling" />
+    <meta property="og:description" content="Help us create the best anime and cartoon dataset to date!" />
+
 </head>
 
 <body>
+    <div id="fb-root"></div>
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8&appId=245091309216121";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
     <div class="mdl-layout mdl-js-layout">
         <!--<div class="mdl-layout__drawer">
             <span class="mdl-layout-title">Material Design</span>
@@ -31,12 +50,13 @@
                         </br>
                         I've collected a lot of images and I need Your help to sort it.</br>
                         </br>
-                        After finishing the dataset I'm going to publish it for everyone to use. Your help is appreciated.</br>
+                        After finishing the dataset I'm going to publish it for everyone to use.</br>
                         </br>
                     </div>
 
                     <div class="mdl-card__supporting-text">
-                        Share
+                        Share with friends too!
+                        <div class="fb-share-button" data-href="http://animedata.azurewebsites.net/" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fanimedata.azurewebsites.net%2F&amp;src=sdkpreparse">Share</a></div>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
                         <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="rate.html">Start</a>
