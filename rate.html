@@ -4,9 +4,11 @@
 <head>
     <title>Anime Image Classification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
-    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.indigo-pink.min.css">
+    <script src="node_modules/material-design-lite/dist/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css" />
+
 </head>
 
 <body>
@@ -54,12 +56,32 @@
                         </label>
                     </div>
                     <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Next</a>
+                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="show-dialog">Next</a>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <dialog id="dialog" class="mdl-dialog">
+        <h4 class="mdl-dialog__title">Are you human?</h4>
+        <div class="mdl-dialog__content">
+            <p>We think you selected too many wrong answers</br>
+                ReCaptcha</p>
+        </div>
+    </dialog>
+    <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+
+    <script>
+        var dialog = document.querySelector('dialog');
+        var showDialogButton = document.querySelector('#show-dialog');
+        if (!dialog.showModal) {
+            dialogPolyfill.registerDialog(dialog);
+        }
+        showDialogButton.addEventListener('click', function() {
+            dialog.showModal();
+        });
+    </script>
 </body>
 
 </html>
