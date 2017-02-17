@@ -64,12 +64,13 @@
         </main>
     </div>
 
-    <dialog id="dialog" class="mdl-dialog">
+    <dialog id="dialog" class="mdl-dialog" style="position: fixed;top: 50%;transform: translate(0, -50%);z-index:2000">
         <h4 class="mdl-dialog__title">Are you human?</h4>
         <div class="mdl-dialog__content">
             <p>We think you selected too many wrong answers</p>
             <p>Are you human?</p>
-            <div class="g-recaptcha" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
+            <div class="g-recaptcha" data-size="compact" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
+
         </div>
     </dialog>
     <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
@@ -77,11 +78,11 @@
     <script>
         var dialog = document.querySelector('dialog');
         var showDialogButton = document.querySelector('#show-dialog');
-        if (!dialog.showModal) {
+        if (!dialog.show) {
             dialogPolyfill.registerDialog(dialog);
         }
         showDialogButton.addEventListener('click', function() {
-            dialog.showModal();
+            dialog.show();
         });
     </script>
 </body>
