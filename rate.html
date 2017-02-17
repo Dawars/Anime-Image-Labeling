@@ -65,12 +65,21 @@
     </div>
 
     <dialog id="dialog" class="mdl-dialog" style="position: fixed;top: 50%;transform: translate(0, -50%);z-index:2000">
-        <h4 class="mdl-dialog__title">Are you human?</h4>
+        <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
         <div class="mdl-dialog__content">
             <p>We think you selected too many wrong answers</p>
-            <p>Are you human?</p>
-            <div class="g-recaptcha" data-size="compact" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
-
+            <style>
+                /* already defined in bootstrap4 */
+                .text-xs-center {
+                    text-align: center;
+                }
+                .g-recaptcha {
+                    display: inline-block;
+                }
+            </style>
+            <div class="text-xs-center">
+                <div class="g-recaptcha" data-size="compact" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
+            </div>
         </div>
     </dialog>
     <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
