@@ -1,0 +1,21 @@
+.wide-card {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+dialog {
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    z-index: 2000;
+}
+
+/* recaptcha center*/
+/* already defined in bootstrap4 */
+.text-xs-center {
+    text-align: center;
+}
+.g-recaptcha {
+    display: inline-block;
+}

@@ -9,23 +9,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 
 <body>
     <div class="mdl-layout mdl-js-layout">
-        <!--<div class="mdl-layout__drawer">
-            <span class="mdl-layout-title">Material Design</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="">Home</a>
-                <a class="mdl-navigation__link" href="">Features</a>
-                <a class="mdl-navigation__link" href="">About Us</a>
-                <a class="mdl-navigation__link" href="">Log Out</a>
-            </nav>
-        </div>-->
         <main class="mdl-layout__content">
             <div class="page-content">
-                <div class="wide-card mdl-card mdl-shadow--2dp" style="margin:0 auto; margin-top: 20px">
+                <div class="wide-card mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Help us label these images</h2>
                     </div>
@@ -64,19 +55,10 @@
         </main>
     </div>
 
-    <dialog id="dialog" class="mdl-dialog" style="position: fixed;top: 50%;transform: translate(0, -50%);z-index:2000">
+    <dialog id="dialog" class="mdl-dialog">
         <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
         <div class="mdl-dialog__content">
             <p>We think you selected too many wrong answers</p>
-            <style>
-                /* already defined in bootstrap4 */
-                .text-xs-center {
-                    text-align: center;
-                }
-                .g-recaptcha {
-                    display: inline-block;
-                }
-            </style>
             <div class="text-xs-center">
                 <div class="g-recaptcha" data-size="compact" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
             </div>
