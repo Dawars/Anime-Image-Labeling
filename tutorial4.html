@@ -20,11 +20,12 @@
                     <h2 class="mdl-card__title-text">Tutorial (4 / 6)</h2>
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/empty_logo.jpg" border="0" alt="" width="100%"/>
+                    <img src="img/empty_text.jpg" border="0" alt="" width="330" height="185"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p>If the image has no content, e.g. one solid color, empty sky, noise, select <strong>Empty</strong>
-                        below.
+                    <p>If the image has no objects, or recognisable shapes in it, select <strong>Empty</strong>
+                        below.<br/>
+                        E.g. empty sky, only one color, noise
                         <!--FIXME empty/noise or blank color?-->
                     </p>
                     <table style="width:100%">
@@ -103,16 +104,17 @@
         var answerLogo = document.querySelector("#switch_logo").checked;
         var answerEmpty = document.querySelector("#switch_empty").checked;
 
-        var answer = !answerText && !answerChar && answerLogo && answerEmpty;
+        var answer = answerText && !answerChar && !answerLogo && answerEmpty;
         if (answer) {
             dialog_correct.showModal();
         } else {
             // error message
+//            TODO: blank and character cannot be both true
             var error = "";
-            if (answerText) error += "The image contains <strong>no</strong> Text<br/>";
-            if (answerChar) error += "The image contains <strong>no</strong> Character<br/>";
             if (!answerEmpty) error += "The image is <strong>Empty</strong><br/>";
-            if (!answerLogo) error += "The image contains a <strong>Logo</strong> too<br/>";
+            if (!answerText) error += "The image contains <strong>Text</strong> too<br/>";
+            if (answerChar) error += "There is <strong>no</strong> Character in the image<br/>";
+            if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
             dialog_wrong.querySelector("#error-message").innerHTML = error;
             dialog_wrong.showModal();
         }

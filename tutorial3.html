@@ -20,10 +20,10 @@
                     <h2 class="mdl-card__title-text">Tutorial (3 / 6)</h2>
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/logo_full.jpg" border="0" alt="" width="100%"/>
+                    <img src="img/logo.jpg" border="0" alt="" width="330" height="185"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p>If you see a TV channel logo or watermark in the picture, select <strong>Logo</strong>
+                    <p>If you see the logo or watermark of a TV channel in the picture, select <strong>Logo</strong>
                         below.
                         <!--FIXME check or select?-->
                     </p>
@@ -52,7 +52,7 @@
                             <th>
                                 <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
                                     <input type="checkbox" id="switch_empty" class="mdl-switch__input" disabled>
-                                    <span class="mdl-switch__label">Blank color</span>
+                                    <span class="mdl-switch__label">Empty</span>
                                 </label>
                             </th>
                         </tr>
@@ -108,9 +108,9 @@
         } else {
             // error message
             var error = "";
-            if (answerText) error += "There is <strong>no</strong> Text in the image<br/>";
-            if (answerChar) error += "The Characters are <strong>too small</strong> <br/>";
             if (!answerLogo) error += "The image contains a <strong>Logo</strong><br/>";
+            if (answerText) error += "There is <strong>no</strong> Text in the image<br/>";
+            if (answerChar) error += "There is <strong>no</strong> Character in the image <br/>";
             dialog_wrong.querySelector("#error-message").innerHTML = error;
             dialog_wrong.showModal();
         }
