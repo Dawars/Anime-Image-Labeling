@@ -7,75 +7,95 @@
     <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
     <script src="node_modules/material-design-lite/dist/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css" />
+    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 
 <body>
-    <div class="mdl-layout mdl-js-layout">
-        <main class="mdl-layout__content">
-            <div class="page-content">
-                <div class="wide-card mdl-card mdl-shadow--2dp">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Help us label these images</h2>
-                    </div>
-                    <div class="mdl-card__media">
-                        <img src="thumb.jpg" border="0" alt="" width="100%" />
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        Select all the options appearing in the image
-                    </div>
-                    <div style="padding:20px;padding-top:0">
-                        <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                          <input type="checkbox" id="switch_text" class="mdl-switch__input">
-                          <span class="mdl-switch__label">Text</span>
-                        </label>
-
-                        <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                          <input type="checkbox" id="switch_logo" class="mdl-switch__input">
-                          <span class="mdl-switch__label">Logo</span>
-                        </label>
-
-                        <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                          <input type="checkbox" id="switch_empty" class="mdl-switch__input">
-                          <span class="mdl-switch__label">Blank color (Empty)</span>
-                        </label>
-
-                        <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                          <input type="checkbox" id="switch_character" class="mdl-switch__input">
-                          <span class="mdl-switch__label">Character</span>
-                        </label>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="show-dialog">Next</a>
-                    </div>
+<div class="mdl-layout mdl-js-layout">
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="wide-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Labeling images (1 / 10)</h2>
+                </div>
+                <div class="mdl-card__media">
+                    <img src="img/placeholder.jpg" border="0" alt="" width="100%"/>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    </p>
+                    <strong>Select all that apply</strong>
+                    <p>The image contains...</p>
+                    <table style="width:100%">
+                        <tr>
+                            <th>
+                                <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Text</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Character</span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Logo</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Blank color</span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect float-right"
+                       id="next-button">Next</a>
                 </div>
             </div>
-        </main>
-    </div>
-
-    <dialog id="dialog" class="mdl-dialog">
-        <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
-        <div class="mdl-dialog__content">
-            <p>We think you selected too many wrong answers</p>
-            <div class="text-xs-center">
-                <div class="g-recaptcha" data-size="compact" data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
-            </div>
         </div>
-    </dialog>
-    <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+    </main>
+</div>
 
-    <script>
-        var dialog = document.querySelector('dialog');
-        var showDialogButton = document.querySelector('#show-dialog');
-        if (!dialog.show) {
-            dialogPolyfill.registerDialog(dialog);
+
+<dialog id="dialog" class="mdl-dialog">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
+    <div class="mdl-dialog__content">
+        <p>We think you selected too many wrong answers</p>
+        <div class="text-xs-center">
+            <div class="g-recaptcha" data-size="compact" data-callback="captchaResponse"
+                 data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
+        </div>
+    </div>
+</dialog>
+<script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+
+<script>
+    var dialog = document.querySelector('dialog');
+    var showDialogButton = document.querySelector('#next-button');
+    if (!dialog.show) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    showDialogButton.addEventListener('click', function () {
+        dialog.show();
+    });
+
+    function captchaResponse(response) {
+        if (response.length > 0) {
+            dialog.close()
         }
-        showDialogButton.addEventListener('click', function() {
-            dialog.show();
-        });
-    </script>
+    }
+</script>
 </body>
 
 </html>
