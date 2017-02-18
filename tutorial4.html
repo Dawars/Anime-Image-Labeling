@@ -25,8 +25,7 @@
                 <div class="mdl-card__supporting-text">
                     <p>If the image has no objects, or recognisable shapes in it, select <strong>Empty</strong>
                         below.<br/>
-                        E.g. empty sky, only one color, noise
-                        <!--FIXME empty/noise or blank color?-->
+                        E.g. empty sky, monochromatic image, noise
                     </p>
                     <table style="width:100%">
                         <tr>
@@ -109,7 +108,6 @@
             dialog_correct.showModal();
         } else {
             // error message
-//            TODO: blank and character cannot be both true
             var error = "";
             if (!answerEmpty) error += "The image is <strong>Empty</strong><br/>";
             if (!answerText) error += "The image contains <strong>Text</strong> too<br/>";
