@@ -1,0 +1,114 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>Anime Image Classification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
+    <script src="node_modules/material-design-lite/dist/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+</head>
+
+<body>
+<div class="mdl-layout mdl-js-layout">
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="wide-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Tutorial (1 / 5)</h2>
+                </div>
+                <div class="mdl-card__media">
+                    <img src="img/text1.jpg" border="0" alt="" width="100%"/>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <p>When you see any text e.g. writing, subtitles, cast in the picture, select <strong>Text</strong>
+                        below:
+                    </p>
+                    <table style="width:100%">
+                        <tr>
+                            <th>
+                                <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Text</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input" disabled>
+                                    <span class="mdl-switch__label">Logo</span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input" disabled>
+                                    <span class="mdl-switch__label">Blank color</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_character" class="mdl-switch__input" disabled>
+                                    <span class="mdl-switch__label">Character</span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect float-right"
+                       id="next-button">Next</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<dialog id="dialog-correct" class="mdl-dialog correct">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Good job</h4>
+    <div class="mdl-dialog__content">
+        <p>You selected the correct answers</p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
+           href="tutorial2.html">Next</a>
+    </div>
+</dialog>
+<dialog id="dialog-wrong" class="mdl-dialog incorrect">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Wrong answer</h4>
+    <div class="mdl-dialog__content">
+        <p>The image contains <strong>Text</strong></p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close float-right">Try again</button>
+    </div>
+</dialog>
+<script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+
+<script>
+    var nextButton = document.querySelector('#next-button');
+
+    var dialog_correct = document.querySelector('#dialog-correct');
+    var dialog_wrong = document.querySelector('#dialog-wrong');
+
+    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
+    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
+
+    nextButton.addEventListener('click', function () {
+        var answer = document.querySelector("#switch_text").checked;
+        if (answer) {
+            dialog_correct.showModal();
+        } else {
+            dialog_wrong.showModal();
+        }
+    });
+
+    dialog_wrong.querySelector('.close').addEventListener('click', function() {
+        dialog_wrong.close();
+    });
+</script>
+</body>
+
+</html>

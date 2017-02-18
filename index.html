@@ -4,86 +4,63 @@
 <head>
     <title>Anime Image Classification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.indigo-pink.min.css">
-    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js"></script>
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
+    <script src="node_modules/material-design-lite/dist/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <!-- You can use Open Graph tags to customize link previews.
-  Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
-    <meta property="og:url" content="http://animedata.azurewebsites.net/" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Anime dataset labeling" />
-    <meta property="og:description" content="Help us create the best anime and cartoon dataset to date!" />
+    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 
 </head>
 
 <body>
-    <div id="fb-root"></div>
-    <script>
-        (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8&appId=245091309216121";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-    </script>
-    <script>
-        window.twttr = (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0],
-                t = window.twttr || {};
-            if (d.getElementById(id)) return t;
-            js = d.createElement(s);
-            js.id = id;
-            js.src = "https://platform.twitter.com/widgets.js";
-            fjs.parentNode.insertBefore(js, fjs);
-
-            t._e = [];
-            t.ready = function(f) {
-                t._e.push(f);
-            };
-
-            return t;
-        }(document, "script", "twitter-wjs"));
-    </script>
-    <div class="mdl-layout mdl-js-layout">
-        <main class="mdl-layout__content">
-            <div class="page-content">
-                <div class="wide-card mdl-card mdl-shadow--2dp">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Anime or Cartoon</h2>
+<div class="mdl-layout mdl-js-layout">
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="wide-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Anime or Cartoon</h2>
+                </div>
+                <div class="mdl-card__media">
+                    <img src="aang.png" border="0" alt="Avatar Aang" width="100%"/>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    I'm working on a program to distinguish between Anime and Cartoon based on their
+                    <i><strong>style</strong></i>.<br/>
+                    <br/>
+                    I'm using Deep Learning and I need a big dataset. I've collected a lot of images and I need Your
+                    help to sort it.<br/><br/>
+                    <!--After finishing the dataset I'm going to publish it for everyone to use.<br/>-->
+                    <!--
+                    <strong>Share with your friends too!</strong></br>
+                    <div class="fb-share-button" data-href="http://animedata.azurewebsites.net/"
+                         data-layout="button_count" data-size="large" data-mobile-iframe="true"><a
+                            class="fb-xfbml-parse-ignore" target="_blank"
+                            href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fanimedata.azurewebsites.net%2F&amp;src=sdkpreparse">Share</a>
                     </div>
-                    <div class="mdl-card__media">
-                        <img src="aang.png" border="0" alt="Avatar Aang" width="100%" />
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        I'm working on a program to distinguish between Anime and Cartoon based on their <i>style</i>.</br>
-                        </br>
-                        I'm using Deep learning and therefore I need a big dataset.</br>
-                        </br>
-                        I've collected a lot of images and I need Your help to sort it.</br>
-                        </br>
-                        After finishing the dataset I'm going to publish it for everyone to use.</br>
-                        </br>
-                        <strong>Share with your friends too!</strong></br>
-                        <div class="fb-share-button" data-href="http://animedata.azurewebsites.net/" data-layout="button_count" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fanimedata.azurewebsites.net%2F&amp;src=sdkpreparse">Share</a></div>
-                        <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=Help%20us%20label%20this%20#anime%20#and%20cartoon%20dataset%20for%20#deeplearning" data-size="large">Tweet</a>
-                    </div>
-                    <div class="mdl-card__actions mdl-card--border">
-                        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="rate.html">Start</a>
-                    </div>
+                    <a class="twitter-share-button"
+                       href="https://twitter.com/intent/tweet?text=Help%20us%20label%20this%20#anime%20#and%20cartoon%20dataset%20for%20#deeplearning"
+                       data-size="large">Tweet</a>-->
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <!--<a class="mdl-button mdl-button&#45;&#45;colored mdl-js-button mdl-js-ripple-effect "-->
+                       <!--href="rate.html">Skip tutorial</a>-->
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect float-right"
+                       href="tutorial1.html">Start</a>
                 </div>
             </div>
-            <footer class="mdl-mini-footer">
-                <div class="mdl-mini-footer__top-section">
-                    <div class="mdl-mini-footer__right-section" style="margin: 0 auto">
-                        <p>&copy; Dawars 2017</p>
-                    </div>
-            </footer>
-        </main>
-
         </div>
+        <footer class="mdl-mini-footer">
+            <div class="mdl-mini-footer__top-section" style="margin: 0 auto">
+                <div class="mdl-mini-footer__right-section">
+                    <p>&copy; Dawars 2017</p>
+                    <p>Copyright Disclaimer: I don't own these images, Under Section 107 of the Copyright Act 1976
+                        it is
+                        considered fair use.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+</div>
 </body>
 
 </html>

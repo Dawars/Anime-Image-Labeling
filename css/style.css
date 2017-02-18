@@ -1,7 +1,37 @@
 .wide-card {
     margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 500px) {
+    /* For mobile phones: */
+    .wide-card {
+        width: 100%;
+    }
+
+    .page-content {
+        padding: 0 10px 0 10px;
+    }
+}
+
+/* recaptcha center*/
+/* already defined in bootstrap4 */
+.text-xs-center {
+    text-align: center;
+}
+
+.g-recaptcha {
+    display: inline-block;
+}
+
+.float-right {
+    float: right;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
 }
 
 dialog {
@@ -11,11 +41,14 @@ dialog {
     z-index: 2000;
 }
 
-/* recaptcha center*/
-/* already defined in bootstrap4 */
-.text-xs-center {
-    text-align: center;
+.correct {
+    background-color: #00c853;
 }
-.g-recaptcha {
-    display: inline-block;
+
+.correct, .correct p, .correct a, .incorrect, .incorrect p, .incorrect a, .incorrect button {
+    color: #ffffff;
+}
+
+.incorrect {
+    background-color: #d50000;
 }
