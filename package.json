@@ -21,7 +21,6 @@
   "homepage": "https://github.com/Dawars/Anime-Image-Labeling#readme",
   "dependencies": {
     "dialog-polyfill": "^0.4.7",
-    "material-components-web": "^0.4.0",
     "material-design-lite": "^1.3.0"
   }
 }
