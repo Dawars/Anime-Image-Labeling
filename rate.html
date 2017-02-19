@@ -4,12 +4,13 @@
 <head>
     <title>Anime Image Classification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css"/>
     <script src="node_modules/material-design-lite/dist/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 
 <body>
@@ -18,11 +19,11 @@
         <div class="page-content">
             <div class="wide-card mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Work in progress</h2>
+                    <h2 class="mdl-card__title-text">Coming soon</h2>
                     <!--<h2 class="mdl-card__title-text">Labeling images (1 / 10)</h2>-->
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/placeholder.jpg" border="0" alt="" width="100%"/>
+                    <img src="img/object.jpg" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <p><strong>Select all that apply</strong><br/>
@@ -52,7 +53,7 @@
                             <th>
                                 <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
                                     <input type="checkbox" id="switch_empty" class="mdl-switch__input">
-                                    <span class="mdl-switch__label">Blank color</span>
+                                    <span class="mdl-switch__label">Blank</span>
                                 </label>
                             </th>
                         </tr>
@@ -66,7 +67,14 @@
         </div>
     </main>
 </div>
-
+<script type="text/javascript">
+    var onloadCallback = function () {
+        alert("grecaptcha is ready!");
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>
 
 <dialog id="dialog" class="mdl-dialog">
     <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
@@ -98,6 +106,7 @@
         }
     }
 </script>
+
 </body>
 
 </html>
