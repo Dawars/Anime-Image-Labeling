@@ -1,0 +1,26 @@
+{
+  "name": "anime-image-labeling",
+  "version": "1.0.0",
+  "description": "A small website to crowdsource anime and cartoon image labeling Edit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dawars/Anime-Image-Labeling.git"
+  },
+  "keywords": [
+    "anime"
+  ],
+  "author": "dawars",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Dawars/Anime-Image-Labeling/issues"
+  },
+  "homepage": "https://github.com/Dawars/Anime-Image-Labeling#readme",
+  "dependencies": {
+    "dialog-polyfill": "^0.4.7",
+    "material-design-lite": "^1.3.0"
+  }
+}
