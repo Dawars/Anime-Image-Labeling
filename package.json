@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.14.1",
     "express-session": "^1.15.1",
+    "hogan-express": "^0.5.2",
     "mysql": "^2.13.0"
   }
 }
