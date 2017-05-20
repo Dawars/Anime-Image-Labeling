@@ -2,13 +2,16 @@
 <html>
 
 <head>
-    <title>Anime Image Classification</title>
+    <title>{{head_title}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
-    <script src="node_modules/material-design-lite/dist/material.min.js"></script>
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.light_blue-blue.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
+    <link rel="stylesheet" type="text/css" href="css/dialog-polyfill.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
 </head>
 
 <body>
@@ -17,17 +20,14 @@
         <div class="page-content">
             <div class="wide-card mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Tutorial (4 / 6)</h2>
+                    <h2 class="mdl-card__title-text">{{card_title}}</h2>
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/empty_text.jpg" border="0" alt="" width="100%"/>
+                    <img src="{{img}}" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p>If the image has no objects, or recognisable shapes in it, select <strong>Blank</strong>
-                        below.<br/>
-                        E.g. empty sky, noise (even with text or logo)
-                    </p>
-                    <!--blank color?-->
+                    <p><strong>Select all that apply</strong><br/>
+                        The image contains...</p>
                     <table style="width:100%">
                         <tr>
                             <th>
@@ -69,13 +69,13 @@
 </div>
 
 <dialog id="dialog-correct" class="mdl-dialog correct">
-    <h4 class="mdl-dialog__title" style="font-size: 31px;">Correct</h4>
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Good job</h4>
     <div class="mdl-dialog__content">
-        <p><strong>Now try one on your own</strong></p>
+        <p><strong>Just one more.</strong></p>
     </div>
     <div class="mdl-dialog__actions">
         <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
-           href="tutorial5.html">Next</a>
+           href="tutorial6.html">Start</a>
     </div>
 </dialog>
 <dialog id="dialog-wrong" class="mdl-dialog incorrect">
@@ -87,7 +87,7 @@
         <button type="button" class="mdl-button close float-right">Try again</button>
     </div>
 </dialog>
-<script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+<script src="js/dialog-polyfill.js"></script>
 
 <script>
     var nextButton = document.querySelector('#next-button');
@@ -101,19 +101,19 @@
     nextButton.addEventListener('click', function () {
         var answerText = document.querySelector("#switch_text").checked;
         var answerChar = document.querySelector("#switch_character").checked;
-        var answerLogo = document.querySelector("#switch_logo").checked;
         var answerEmpty = document.querySelector("#switch_empty").checked;
+        var answerLogo = document.querySelector("#switch_logo").checked;
 
-        var answer = answerText && !answerChar && !answerLogo && answerEmpty;
+        var answer = answerText && answerChar && !answerEmpty && !answerLogo;
         if (answer) {
             dialog_correct.showModal();
         } else {
             // error message
             var error = "";
-            if (!answerEmpty) error += "The image is <strong>Empty</strong><br/>";
-            if (!answerText) error += "The image contains <strong>Text</strong> too<br/>";
-            if (answerChar) error += "There is <strong>no</strong> Character in the image<br/>";
+            if (!answerText) error += "The image contains <strong>Text</strong><br/>";
+            if (!answerChar) error += "The image contains a <strong>Character</strong><br/>";
             if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
+            if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
             dialog_wrong.querySelector("#error-message").innerHTML = error;
             dialog_wrong.showModal();
         }

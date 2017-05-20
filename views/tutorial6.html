@@ -1,0 +1,125 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title>Anime Image Classification</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
+    <script src="node_modules/material-design-lite/dist/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+</head>
+
+<body>
+<div class="mdl-layout mdl-js-layout">
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="wide-card mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">Tutorial (6 / 6)</h2>
+                </div>
+                <div class="mdl-card__media">
+                    <img src="../static/img/object.jpg" border="0" alt="" width="100%"/>
+                </div>
+                <div class="mdl-card__supporting-text">
+                    <p><strong>Select all that apply</strong><br/>
+                        The image contains...</p>
+                    <table style="width:100%">
+                        <tr>
+                            <th>
+                                <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Text</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Character</span>
+                                </label>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Logo</span>
+                                </label>
+                            </th>
+                            <th>
+                                <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Blank</span>
+                                </label>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mdl-card__actions mdl-card--border">
+                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect float-right"
+                       id="next-button">Next</a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<dialog id="dialog-correct" class="mdl-dialog correct">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Good job</h4>
+    <div class="mdl-dialog__content">
+        <p><strong>You have completed the tutorial.</strong><br/>
+            Now starts the <i>real</i> challenge.</p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
+           href="rate.html">Start</a>
+    </div>
+</dialog>
+<dialog id="dialog-wrong" class="mdl-dialog incorrect">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Wrong answer</h4>
+    <div class="mdl-dialog__content">
+        <p id="error-message"></p>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close float-right">Try again</button>
+    </div>
+</dialog>
+<script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
+
+<script>
+    var nextButton = document.querySelector('#next-button');
+
+    var dialog_correct = document.querySelector('#dialog-correct');
+    var dialog_wrong = document.querySelector('#dialog-wrong');
+
+    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
+    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
+
+    nextButton.addEventListener('click', function () {
+        var answerText = document.querySelector("#switch_text").checked;
+        var answerChar = document.querySelector("#switch_character").checked;
+        var answerEmpty = document.querySelector("#switch_empty").checked;
+        var answerLogo = document.querySelector("#switch_logo").checked;
+
+        var answer = !answerText && !answerChar && !answerEmpty && !answerLogo;
+        if (answer) {
+            dialog_correct.showModal();
+        } else {
+            // error message
+            var error = "";
+            if (answerChar) error += "The <strong>face</strong> of the Character is not visible<br/>";
+            if (answerText) error += "The image contains <strong>no</strong> Text<br/>";
+            if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
+            if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
+            dialog_wrong.querySelector("#error-message").innerHTML = error;
+            dialog_wrong.showModal();
+        }
+    });
+    dialog_wrong.querySelector('.close').addEventListener('click', function () {
+        dialog_wrong.close();
+    });
+</script>
+</body>
+
+</html>

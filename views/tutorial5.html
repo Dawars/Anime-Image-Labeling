@@ -8,7 +8,7 @@
     <script src="node_modules/material-design-lite/dist/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
 </head>
 
 <body>
@@ -17,16 +17,14 @@
         <div class="page-content">
             <div class="wide-card mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Tutorial (2 / 6)</h2>
+                    <h2 class="mdl-card__title-text">Tutorial (5 / 6)</h2>
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/character.jpg" border="0" alt="" width="100%"/>
+                    <img src="../static/img/character_text.jpg" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p>When you see a character (person) in the image, select <strong>Character</strong>
-                        below.<br/>
-                        The head of the character must be visible.
-                    </p>
+                    <p><strong>Select all that apply</strong><br/>
+                        The image contains...</p>
                     <table style="width:100%">
                         <tr>
                             <th>
@@ -45,13 +43,13 @@
                         <tr>
                             <th>
                                 <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input" disabled>
+                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Logo</span>
                                 </label>
                             </th>
                             <th>
                                 <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input" disabled>
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Blank</span>
                                 </label>
                             </th>
@@ -68,13 +66,13 @@
 </div>
 
 <dialog id="dialog-correct" class="mdl-dialog correct">
-    <h4 class="mdl-dialog__title" style="font-size: 31px;">Great</h4>
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Good job</h4>
     <div class="mdl-dialog__content">
-        <p>You selected the right answers</p>
+        <p><strong>Just one more.</strong></p>
     </div>
     <div class="mdl-dialog__actions">
         <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
-           href="tutorial3.html">Next</a>
+           href="tutorial6.html">Start</a>
     </div>
 </dialog>
 <dialog id="dialog-wrong" class="mdl-dialog incorrect">
@@ -100,15 +98,19 @@
     nextButton.addEventListener('click', function () {
         var answerText = document.querySelector("#switch_text").checked;
         var answerChar = document.querySelector("#switch_character").checked;
+        var answerEmpty = document.querySelector("#switch_empty").checked;
+        var answerLogo = document.querySelector("#switch_logo").checked;
 
-        var answer = !answerText && answerChar;
+        var answer = answerText && answerChar && !answerEmpty && !answerLogo;
         if (answer) {
             dialog_correct.showModal();
         } else {
             // error message
             var error = "";
-            if (answerText) error += "The image contains <strong>no</strong> text<br/>";
-            if (!answerChar) error += "The image contains a <strong>character</strong><br/>";
+            if (!answerText) error += "The image contains <strong>Text</strong><br/>";
+            if (!answerChar) error += "The image contains a <strong>Character</strong><br/>";
+            if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
+            if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
             dialog_wrong.querySelector("#error-message").innerHTML = error;
             dialog_wrong.showModal();
         }

@@ -4,11 +4,13 @@
 <head>
     <title>Anime Image Classification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css">
+    <link rel="stylesheet" href="node_modules/material-design-lite/dist/material.light_blue-blue.min.css"/>
     <script src="node_modules/material-design-lite/dist/material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
     <link rel="stylesheet" type="text/css" href="node_modules/dialog-polyfill/dialog-polyfill.css"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 
 <body>
@@ -17,15 +19,15 @@
         <div class="page-content">
             <div class="wide-card mdl-card mdl-shadow--2dp">
                 <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Tutorial (3 / 6)</h2>
+                    <h2 class="mdl-card__title-text">Coming soon</h2>
+                    <!--<h2 class="mdl-card__title-text">Labeling images (1 / 10)</h2>-->
                 </div>
                 <div class="mdl-card__media">
-                    <img src="img/logo.jpg" border="0" alt="" width="100%"/>
+                    <img src="../static/img/object.jpg" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p>If you see the logo or watermark of a TV channel in the picture, select <strong>Logo</strong>
-                        below.
-                    </p>
+                    <p><strong>Select all that apply</strong><br/>
+                        The image contains...</p>
                     <table style="width:100%">
                         <tr>
                             <th>
@@ -50,7 +52,7 @@
                             </th>
                             <th>
                                 <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input" disabled>
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Blank</span>
                                 </label>
                             </th>
@@ -65,59 +67,46 @@
         </div>
     </main>
 </div>
+<script type="text/javascript">
+    var onloadCallback = function () {
+        alert("grecaptcha is ready!");
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+</script>
 
-<dialog id="dialog-correct" class="mdl-dialog correct">
-    <h4 class="mdl-dialog__title" style="font-size: 31px;">Awesome</h4>
+<dialog id="dialog" class="mdl-dialog">
+    <h4 class="mdl-dialog__title" style="font-size: 31px;">Are you human?</h4>
     <div class="mdl-dialog__content">
-        <p>You selected the right answers</p>
-    </div>
-    <div class="mdl-dialog__actions">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
-           href="tutorial4.html">Next</a>
-    </div>
-</dialog>
-<dialog id="dialog-wrong" class="mdl-dialog incorrect">
-    <h4 class="mdl-dialog__title" style="font-size: 31px;">Wrong answer</h4>
-    <div class="mdl-dialog__content">
-        <p id="error-message"></p>
-    </div>
-    <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close float-right">Try again</button>
+        <p>We think you selected too many wrong answers</p>
+        <div class="text-xs-center">
+            <div class="g-recaptcha" data-size="compact" data-callback="captchaResponse"
+                 data-sitekey="6LdV1xUUAAAAAKOJ1-hLee0RtUtBEkP2eEuAbMjW"></div>
+        </div>
     </div>
 </dialog>
 <script src="node_modules/dialog-polyfill/dialog-polyfill.js"></script>
 
 <script>
-    var nextButton = document.querySelector('#next-button');
+    var dialog = document.querySelector('dialog');
+    var showDialogButton = document.querySelector('#next-button');
+    if (!dialog.show) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    showDialogButton.addEventListener('click', function () {
+        dialog.show();
+    });
+    //            TODO: blank and character cannot be both true
 
-    var dialog_correct = document.querySelector('#dialog-correct');
-    var dialog_wrong = document.querySelector('#dialog-wrong');
-
-    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
-    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
-
-    nextButton.addEventListener('click', function () {
-        var answerText = document.querySelector("#switch_text").checked;
-        var answerChar = document.querySelector("#switch_character").checked;
-        var answerLogo = document.querySelector("#switch_logo").checked;
-
-        var answer = !answerText && !answerChar && answerLogo;
-        if (answer) {
-            dialog_correct.showModal();
-        } else {
-            // error message
-            var error = "";
-            if (!answerLogo) error += "The image contains a <strong>Logo</strong><br/>";
-            if (answerText) error += "There is <strong>no</strong> Text in the image<br/>";
-            if (answerChar) error += "There is <strong>no</strong> Character in the image <br/>";
-            dialog_wrong.querySelector("#error-message").innerHTML = error;
-            dialog_wrong.showModal();
+    function captchaResponse(response) {
+        if (response.length > 0) {
+//            send to server for auth and act based on response
+            dialog.close()
         }
-    });
-    dialog_wrong.querySelector('.close').addEventListener('click', function () {
-        dialog_wrong.close();
-    });
+    }
 </script>
+
 </body>
 
 </html>
