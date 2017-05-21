@@ -19,7 +19,7 @@ app.get('/anime/', function (req, res) {
     res.render('card', {
         head_title: 'Image Labeling',
         card_title: 'Introduction',
-        img: '/anime/img/aang.jpg',
+        img: '/anime/img/Attack_On_Titan/Attack_On_Titan_ep01_0155.jpg', // '/anime/img/aang.jpg',
     });
 });
 
@@ -27,28 +27,30 @@ app.get('/anime/tutorial', function (req, res) {
     res.send('Tutorial!')
 });
 
-app.get('/anime/getRandomImage', function (req, res) {
+var domain = "http://dawars.me/anime/";
+
+app.get('/anime/next_image', function (req, res) {
     var config = require('./db-config');
     var mysql = require('mysql');
     var connection = mysql.createConnection(config);
 
     connection.connect();
 
-    connection.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+    var sql = 'SELECT image.image_id, image.series, image.link FROM image ' +
+        'LEFT JOIN ratings ON image.image_id=ratings.image_id ' +
+        'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id)';
+    connection.query(sql, function (err, rows, fields) {
         if (err) throw err;
-
-        console.log('The solution is: ', rows[0].solution)
+        var img = 'img' + rows[0].series + '/' + rows[0].link;
+        console.log('Image sent: ', img);
+        res.send({
+            id: rows[0].image_id,
+            imgURL: domain + img
+        })
     });
 
     connection.end();
 
-    res.send('end')
-    /*
-     res.send({
-     // TODO db conn
-     id: 22,
-     imgURL: "http://animedata.azurewebsites.net/img/text.jpg"
-     })*/
 });
 
 var port = process.env.PORT || 3000;
