@@ -23,7 +23,7 @@
                     <h2 class="mdl-card__title-text">{{card_title}}</h2>
                 </div>
                 <div class="mdl-card__media">
-                    <img src="{{img}}" border="0" alt="" width="100%"/>
+                    <img id="image-elem" src="{{img}}" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
                     <p><strong>Select all that apply</strong><br/>
@@ -74,8 +74,8 @@
         <p><strong>Just one more.</strong></p>
     </div>
     <div class="mdl-dialog__actions">
-        <a class="mdl-button mdl-js-button mdl-js-ripple-effect float-right"
-           href="tutorial6.html">Start</a>
+        <button type="button" class="mdl-button start float-right">Start</button>
+
     </div>
 </dialog>
 <dialog id="dialog-wrong" class="mdl-dialog incorrect">
@@ -89,7 +89,15 @@
 </dialog>
 <script src="js/dialog-polyfill.js"></script>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
 <script>
+    var tutorial = false;
+    var introduction = true;
+
+    var image_id = 1; // fixme handle when tutorial and first image
+
     var nextButton = document.querySelector('#next-button');
 
     var dialog_correct = document.querySelector('#dialog-correct');
@@ -98,30 +106,78 @@
     if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
     if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
-    nextButton.addEventListener('click', function () {
-        var answerText = document.querySelector("#switch_text").checked;
-        var answerChar = document.querySelector("#switch_character").checked;
-        var answerEmpty = document.querySelector("#switch_empty").checked;
-        var answerLogo = document.querySelector("#switch_logo").checked;
+    nextButton.addEventListener('click', function (e) {
+        e.preventDefault();
 
-        var answer = answerText && answerChar && !answerEmpty && !answerLogo;
-        if (answer) {
-            dialog_correct.showModal();
-        } else {
-            // error message
-            var error = "";
-            if (!answerText) error += "The image contains <strong>Text</strong><br/>";
-            if (!answerChar) error += "The image contains a <strong>Character</strong><br/>";
-            if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
-            if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
-            dialog_wrong.querySelector("#error-message").innerHTML = error;
-            dialog_wrong.showModal();
+        var answerText = $("#switch_text").prop("checked");
+        var answerChar = $("#switch_character").prop("checked");
+        var answerEmpty = $("#switch_empty").prop("checked");
+        var answerLogo = $("#switch_logo").prop("checked");
+
+        // todo change browser url
+
+        // if tutorial
+        if (tutorial) {
+            // todo implement tutorial
+            // change card_title
+
+            var answer = answerText && answerChar && !answerEmpty && !answerLogo;
+            if (answer) {
+                dialog_correct.showModal();
+            } else {
+                // error message
+                var error = "";
+                if (!answerText) error += "The image contains <strong>Text</strong><br/>";
+                if (!answerChar) error += "The image contains a <strong>Character</strong><br/>";
+                if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
+                if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
+                dialog_wrong.querySelector("#error-message").innerHTML = error;
+                dialog_wrong.showModal();
+            }
+        } else { // if not tutorial
+
+            // reset switches
+            $('.mdl-js-switch').each(function (i, obj) {
+                obj.MaterialSwitch.off();
+                obj.MaterialSwitch.disable(); // disable switches until ajax arrives
+            });
+
+            // todo get next
+            $.ajax({
+                method: "POST",
+                url: "/anime/next_image",
+                dataType: "JSON",
+                data: {
+                    "id": image_id,
+                    "text": answerText,
+                    "char": answerChar,
+                    "empty": answerEmpty,
+                    "logo": answerLogo
+                },
+                success: function (data) {
+                    console.log(data);
+                    console.log(data.imgURL);
+                    console.log(data['imgURL']);
+                    image_id = data.id;
+//                imageID.text(data.id);
+                    $("#image-elem").attr('src', data.imgURL);
+                    $('.mdl-js-switch').each(function (i, obj) {
+                        obj.MaterialSwitch.enable();
+                    });
+                }
+            });
         }
     });
     dialog_wrong.querySelector('.close').addEventListener('click', function () {
         dialog_wrong.close();
     });
+
+    dialog_correct.querySelector('.start').addEventListener('click', function () {
+        dialog_correct.close();
+        // todo next tutorial
+    });
 </script>
+
 </body>
 
 </html>
