@@ -6,6 +6,7 @@ var config = require('./db-config');
 
 var app = express();
 
+
 // map static resources to url
 app.use('/anime/', express.static('static'));
 app.use('/anime/iisnode', express.static('iisnode')); // debug only
@@ -22,11 +23,38 @@ app.set('view engine', 'html');
 const sqlQuery = 'SELECT image.image_id, image.series, image.link FROM image ' +
     'LEFT JOIN ratings ON image.image_id=ratings.image_id ' +
     'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id)';
+const sqlInsertUser = 'INSERT INTO users SET ?';
+const sqlInsert = 'INSERT INTO ratings SET ?';
 
+function insertUser(ip) {
+    var vars = {ip: ip};
+    var connection = mysql.createConnection(config);
+    try {
+        connection.connect();
+        var query = connection.query(sqlInsertUser, vars, function (err, results, fields) {
+            if (err) throw err;
+            console.log('Inserted ', results.affectedRows, 'rows to user');
+        });
+        console.log(query.sql);
+
+    } catch (e) {
+        console.log(e);
+    } finally {
+        connection.end();
+    }
+}
+
+app.enable('trust proxy');
 
 // url handling
 app.get('/anime/', function (req, res) {
-    // var startImage = getNextImage();
+    // add new user
+    var ip = req.headers['x-forwarded-for'];
+    insertUser(ip);
+
+    // init session
+
+    // save session cookie to db
 
     res.render('card', {
         head_title: 'Image Labeling',
@@ -55,7 +83,7 @@ var nextImageFunc = function (req, res, success) {
             res.send({
                 id: rows[0].image_id,
                 imgURL: domain + imgLink,
-                prevSave: success// todo add successfully saved flag
+                prevSave: success
             })
         });
     } catch (e) {
@@ -65,12 +93,10 @@ var nextImageFunc = function (req, res, success) {
     }
 };
 
-const sqlInsert = 'INSERT INTO ratings SET ?';
 
 app.get('/anime/next_image', nextImageFunc);
 app.post('/anime/next_image', function (req, res) {
     console.log("post request");
-    console.log(req.body);      // your JSON
 
     var id = req.body.id; // image_id
     var text = req.body.text;
@@ -78,29 +104,27 @@ app.post('/anime/next_image', function (req, res) {
     var empty = req.body.empty;
     var logo = req.body.logo;
 
-    console.log('id ', id, ' text ', text, ' char ', char, ' empty ', empty, ' logo ', logo);
-
-    if (id !== -1) {
+    if (id !== '-1') {
 
         // check session
 
         // convert values
         var vars = {
-            // rating_id: '',
             image_id: id,
             text: text === 'true' ? 1 : 0,
             person: char === 'true' ? 1 : 0,
             empty: empty === 'true' ? 1 : 0,
             logo: logo === 'true' ? 1 : 0
         };
-        console.log(vars);
         // save to db
         var connection = mysql.createConnection(config);
         try {
             connection.connect();
             var query = connection.query(sqlInsert, vars, function (err, results, fields) {
-                // if (err) throw err;
-                // console.log('Inserted ', results.affectedRows, 'rows');
+                if (err) throw err;
+                console.log('Inserted ', results.affectedRows, 'rows');
+
+                nextImageFunc(req, res, results.affectedRows > 0); // redirect to get impl
             });
             console.log(query.sql);
 
@@ -109,9 +133,10 @@ app.post('/anime/next_image', function (req, res) {
         } finally {
             connection.end();
         }
+    } else {
+        nextImageFunc(req, res, true); // redirect to get impl
     }
 
-    return nextImageFunc(req, res, true); // redirect to get impl
 });
 
 var port = process.env.PORT || 3000;

@@ -96,7 +96,7 @@
     var tutorial = false;
     var introduction = true;
 
-    var image_id = 1; // fixme handle when tutorial and first image
+    var image_id = -1; // image id currently being rated
 
     var nextButton = document.querySelector('#next-button');
 
@@ -142,7 +142,6 @@
                 obj.MaterialSwitch.disable(); // disable switches until ajax arrives
             });
 
-            // todo get next
             $.ajax({
                 method: "POST",
                 url: "/anime/next_image",
@@ -156,13 +155,10 @@
                 },
                 success: function (data) {
                     console.log(data);
-                    console.log(data.imgURL);
-                    console.log(data['imgURL']);
                     image_id = data.id;
-//                imageID.text(data.id);
                     $("#image-elem").attr('src', data.imgURL);
                     $('.mdl-js-switch').each(function (i, obj) {
-                        obj.MaterialSwitch.enable();
+                        obj.MaterialSwitch.enable(); // fixme only enable on image load
                     });
                 }
             });

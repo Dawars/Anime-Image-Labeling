@@ -12,7 +12,7 @@ app.listen(port, function () {
 });
 
 app.get('/', function (req, res) {
-    res.send('test')
+    res.send(req.ip);
 });
 
 app.get('/getRandomImage', function (req, res) {
