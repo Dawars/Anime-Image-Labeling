@@ -157,6 +157,11 @@
                     console.log(data);
                     image_id = data.id;
                     $("#image-elem").attr('src', data.imgURL);
+                    window.history.pushState({
+                        "html": data.html,
+                        "pageTitle": data.pageTitle
+                    }, "", '/anime/' + image_id);
+
                     $('.mdl-js-switch').each(function (i, obj) {
                         obj.MaterialSwitch.enable(); // fixme only enable on image load
                     });

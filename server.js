@@ -20,11 +20,13 @@ app.engine('html', require('hogan-express'));
 app.set('view engine', 'html');
 
 
-const sqlQuery = 'SELECT image.image_id, image.series, image.link FROM image ' +
+const sqlQueryNext = 'SELECT image.image_id, image.series, image.link FROM image ' +
     'LEFT JOIN ratings ON image.image_id=ratings.image_id ' +
     'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id)';
-const sqlInsertUser = 'INSERT INTO users SET ?';
-const sqlInsert = 'INSERT INTO ratings SET ?';
+const sqlQueryLink = 'SELECT series, link FROM image ' +
+    'WHERE `image_id` = ?';
+const sqlInsertUser = 'INSERT IGNORE INTO users SET ?';
+const sqlInsertRating = 'INSERT INTO ratings SET ?';
 
 function insertUser(ip) {
     var vars = {ip: ip};
@@ -33,12 +35,11 @@ function insertUser(ip) {
         connection.connect();
         var query = connection.query(sqlInsertUser, vars, function (err, results, fields) {
             if (err) throw err;
-            console.log('Inserted ', results.affectedRows, 'rows to user');
         });
         console.log(query.sql);
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
     } finally {
         connection.end();
     }
@@ -47,7 +48,7 @@ function insertUser(ip) {
 app.enable('trust proxy');
 
 // url handling
-app.get('/anime/', function (req, res) {
+var cardFunc = function (req, res) {
     // add new user
     var ip = req.headers['x-forwarded-for'];
     insertUser(ip);
@@ -56,12 +57,38 @@ app.get('/anime/', function (req, res) {
 
     // save session cookie to db
 
-    res.render('card', {
-        head_title: 'Image Labeling',
-        card_title: 'Introduction',
-        img: '/anime/img/aang.jpg',
-    });
-});
+    // load image from url
+    var imageId = req.params.image_id;
+    if (imageId !== undefined) {
+        var connection = mysql.createConnection(config);
+        try {
+            connection.connect();
+            connection.query(sqlQueryLink, [imageId], function (err, rows, fields) {
+                if (err) throw err;
+                var imgLink = 'img/' + rows[0].series + '/' + rows[0].link;
+                res.render('card', {
+                    head_title: 'Image Labeling',
+                    card_title: 'Introduction',
+                    img: imgLink
+                });
+
+            });
+        } catch (e) {
+            console.error(e);
+        } finally {
+            connection.end();
+        }
+    } else {
+        // TODO add intro page by default
+        res.render('card', {
+            head_title: 'Image Labeling',
+            card_title: 'Introduction',
+            img: '/anime/img/aang.jpg'
+        });
+    }
+};
+app.get('/anime/', cardFunc);
+app.get('/anime/:image_id(\\d+)/', cardFunc);
 
 var domain = "/anime/";
 /**
@@ -74,7 +101,7 @@ var nextImageFunc = function (req, res, success) {
     var connection = mysql.createConnection(config);
     try {
         connection.connect();
-        connection.query(sqlQuery, function (err, rows, fields) {
+        connection.query(sqlQueryNext, function (err, rows, fields) {
             if (err) throw err;
             var imgLink = 'img/' + rows[0].series + '/' + rows[0].link;
 
@@ -120,7 +147,7 @@ app.post('/anime/next_image', function (req, res) {
         var connection = mysql.createConnection(config);
         try {
             connection.connect();
-            var query = connection.query(sqlInsert, vars, function (err, results, fields) {
+            var query = connection.query(sqlInsertRating, vars, function (err, results, fields) {
                 if (err) throw err;
                 console.log('Inserted ', results.affectedRows, 'rows');
 
