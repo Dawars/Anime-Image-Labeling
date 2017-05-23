@@ -98,6 +98,7 @@
 
     var image_id = -1; // image id currently being rated
 
+    var image = $("#image-elem");
     var nextButton = document.querySelector('#next-button');
 
     var dialog_correct = document.querySelector('#dialog-correct');
@@ -156,15 +157,22 @@
                 success: function (data) {
                     console.log(data);
                     image_id = data.id;
-                    $("#image-elem").attr('src', data.imgURL);
+                    image.attr('src', data.imgURL);
+                    image.on('load', function () {
+                        // enable switches when image is loaded
+                        $('.mdl-js-switch').each(function (i, obj) {
+                            obj.MaterialSwitch.enable();
+                        });
+                    });
+
+                    // fixme add image failed to load callback
+
+                    // update browser link
                     window.history.pushState({
                         "html": data.html,
                         "pageTitle": data.pageTitle
                     }, "", '/anime/' + image_id);
 
-                    $('.mdl-js-switch').each(function (i, obj) {
-                        obj.MaterialSwitch.enable(); // fixme only enable on image load
-                    });
                 }
             });
         }
