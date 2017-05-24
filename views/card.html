@@ -28,6 +28,39 @@
                 <div class="mdl-card__supporting-text">
                     <p><strong>Select all that apply</strong><br/>
                         The image contains...</p>
+                    <!--table of switches-->
+                    <div class="table">
+                        <div>
+                            <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                <span class="mdl-switch__label">Text</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                                <span class="mdl-switch__label">Character</span>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="table">
+                        <div>
+                            <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                                <span class="mdl-switch__label">Logo</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                                <span class="mdl-switch__label">Blank</span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <!--
                     <table style="width:100%">
                         <tr>
                             <th>
@@ -57,11 +90,12 @@
                                 </label>
                             </th>
                         </tr>
-                    </table>
+                    </table>-->
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect float-right"
-                       id="next-button">Next</a>
+                    <button class="mdl-button mdl-js-button mdl-button--primary float-right" id="next-button">
+                        Next
+                    </button>
                 </div>
             </div>
         </div>
@@ -107,8 +141,7 @@
     if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
     if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
-    nextButton.addEventListener('click', function (e) {
-        e.preventDefault();
+    $("#next-button").click(function () {
 
         var answerText = $("#switch_text").prop("checked");
         var answerChar = $("#switch_character").prop("checked");
@@ -142,6 +175,8 @@
                 obj.MaterialSwitch.off();
                 obj.MaterialSwitch.disable(); // disable switches until ajax arrives
             });
+            nextButton.MaterialButton.disable();
+
 
             $.ajax({
                 method: "POST",
@@ -163,9 +198,9 @@
                         $('.mdl-js-switch').each(function (i, obj) {
                             obj.MaterialSwitch.enable();
                         });
+                        // enable next button
+                        nextButton.MaterialButton.enable();
                     });
-
-                    // fixme add image failed to load callback
 
                     // update browser link
                     window.history.pushState({
@@ -173,7 +208,14 @@
                         "pageTitle": data.pageTitle
                     }, "", '/anime/' + image_id);
 
+                },
+                error: function (data) {
+                    console.log(data);
+                    alert("Error during saving");
+                    nextButton.MaterialButton.enable();
+
                 }
+
             });
         }
     });

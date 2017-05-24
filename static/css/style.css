@@ -7,6 +7,25 @@
     transform: translate(-50%, -50%);
 }
 
+.mdl-card__supporting-text {
+    color: rgba(0, 0, 0, .70);
+}
+
+div.table {
+    margin: 0 auto;
+    display: table;
+    width: 250px;
+    table-layout: fixed;
+}
+
+div.table > div {
+    display: table-cell;
+    padding: 4px 6px;
+    width: 2%;
+    margin-bottom: 0;
+    color: rgba(0, 0, 0, 0.87);
+}
+
 @media only screen and (max-width: 500px) {
     /* For mobile phones: */
     .wide-card {
@@ -32,9 +51,8 @@
     float: right;
 }
 
-th {
-    font-weight: normal;
-    text-align: left;
+.mdl-button {
+    width: 96px;
 }
 
 dialog {
