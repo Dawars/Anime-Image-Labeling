@@ -102,7 +102,7 @@
 
     var image = $("#image-elem");
 
-    window.history.pushState({ // save 1st image to history
+    window.history.replaceState({ // save 1st image to history
         "image_id": image_id,
         "image_src": image.attr('src')
     }, "", '/anime/' + image_id);
