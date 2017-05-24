@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="css/dialog-polyfill.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
-
 </head>
 
 <body>
@@ -59,38 +58,6 @@
                         </div>
 
                     </div>
-
-                    <!--
-                    <table style="width:100%">
-                        <tr>
-                            <th>
-                                <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
-                                    <span class="mdl-switch__label">Text</span>
-                                </label>
-                            </th>
-                            <th>
-                                <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_character" class="mdl-switch__input">
-                                    <span class="mdl-switch__label">Character</span>
-                                </label>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
-                                    <span class="mdl-switch__label">Logo</span>
-                                </label>
-                            </th>
-                            <th>
-                                <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
-                                    <span class="mdl-switch__label">Blank</span>
-                                </label>
-                            </th>
-                        </tr>
-                    </table>-->
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <button class="mdl-button mdl-js-button mdl-button--primary float-right" id="next-button">
@@ -129,10 +96,17 @@
 <script>
     var tutorial = false;
     var introduction = true;
-
-    var image_id = -1; // image id currently being rated
+    // @formatter:off
+    var image_id = {{image_id}}; // image id currently being rated
+    // @formatter:on
 
     var image = $("#image-elem");
+
+    window.history.pushState({ // save 1st image to history
+        "image_id": image_id,
+        "image_src": image.attr('src')
+    }, "", '/anime/' + image_id);
+
     var nextButton = document.querySelector('#next-button');
 
     var dialog_correct = document.querySelector('#dialog-correct');
@@ -147,8 +121,6 @@
         var answerChar = $("#switch_character").prop("checked");
         var answerEmpty = $("#switch_empty").prop("checked");
         var answerLogo = $("#switch_logo").prop("checked");
-
-        // todo change browser url
 
         // if tutorial
         if (tutorial) {
@@ -170,54 +142,56 @@
             }
         } else { // if not tutorial
 
-            // reset switches
-            $('.mdl-js-switch').each(function (i, obj) {
-                obj.MaterialSwitch.off();
-                obj.MaterialSwitch.disable(); // disable switches until ajax arrives
-            });
-            nextButton.MaterialButton.disable();
+            //            TODO: blank and character cannot be both true
 
-
-            $.ajax({
-                method: "POST",
-                url: "/anime/next_image",
-                dataType: "JSON",
-                data: {
-                    "id": image_id,
-                    "text": answerText,
-                    "char": answerChar,
-                    "empty": answerEmpty,
-                    "logo": answerLogo
-                },
-                success: function (data) {
-                    console.log(data);
-                    image_id = data.id;
-                    image.attr('src', data.imgURL);
-                    image.on('load', function () {
-                        // enable switches when image is loaded
-                        $('.mdl-js-switch').each(function (i, obj) {
-                            obj.MaterialSwitch.enable();
-                        });
-                        // enable next button
-                        nextButton.MaterialButton.enable();
-                    });
-
-                    // update browser link
-                    window.history.pushState({
-                        "html": data.html,
-                        "pageTitle": data.pageTitle
-                    }, "", '/anime/' + image_id);
-
-                },
-                error: function (data) {
-                    console.log(data);
-                    alert("Error during saving");
-                    nextButton.MaterialButton.enable();
-
-                }
-
-            });
         }
+        // reset switches
+        $('.mdl-js-switch').each(function (i, obj) {
+            obj.MaterialSwitch.off();
+            obj.MaterialSwitch.disable(); // disable switches until ajax arrives
+        });
+        nextButton.MaterialButton.disable();
+
+
+        $.ajax({
+            method: "POST",
+            url: "/anime/next_image",
+            dataType: "JSON",
+            data: {
+                "id": image_id,
+                "text": answerText,
+                "char": answerChar,
+                "empty": answerEmpty,
+                "logo": answerLogo
+            },
+            success: function (data) {
+                console.log(data);
+                image_id = data.id;
+                image.attr('src', data.imgURL);
+                image.on('load', function () {
+                    // enable switches when image is loaded
+                    $('.mdl-js-switch').each(function (i, obj) {
+                        obj.MaterialSwitch.enable();
+                    });
+                    // enable next button
+                    nextButton.MaterialButton.enable();
+                });
+
+                // update browser link
+                window.history.pushState({
+                    "image_id": image_id,
+                    "image_src": image.attr('src')
+                }, "", '/anime/' + image_id);
+
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Error during saving");
+                nextButton.MaterialButton.enable();
+
+            }
+
+        });
     });
     dialog_wrong.querySelector('.close').addEventListener('click', function () {
         dialog_wrong.close();
@@ -227,6 +201,11 @@
         dialog_correct.close();
         // todo next tutorial
     });
+    // back button replace img
+    window.onpopstate = function(event) {
+        image_id = event.state.image_id;
+        image.attr('src', event.state.image_src);
+    };
 </script>
 
 </body>
