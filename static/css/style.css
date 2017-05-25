@@ -117,13 +117,13 @@ dialog {
 */
 /*----------*/
 #info {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     background-color: rgba(0, 0, 0, .05);
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    padding: 5px;
+    /*padding: 5px;*/
     /*margin: 0 auto 50px;*/
     right: 16px;
     position: absolute;
@@ -137,21 +137,22 @@ dialog {
     height: 100%;
     font-size: 1.188em;
     font-weight: bold;
-    line-height: 1.4;
+    line-height: 1.5;
     text-align: center;
-    text-shadow: 0 1px rgba(0, 0, 0, .25);
+    /*text-shadow: 0 1px rgba(0, 0, 0, .25);
     color: #fff;
-    background: #84e100;
-    background: -webkit-gradient(linear, left top, left bottom, from(#84e100), to(#6fbc00));
-    background: -webkit-linear-gradient(top, #84e100, #6fbc00);
-    background: -moz-linear-gradient(top, #84e100, #6fbc00);
-    background: -ms-radial-gradient(top, #84e100, #6fbc00);
-    background: -o-linear-gradient(top, #84e100, #6fbc00);
-    background: linear-gradient(top, #84e100, #6fbc00);
+    background: #03a9f4;
+    background: -webkit-gradient(linear, left top, left bottom, from(#03a9f4), to(#0a8abc));
+    background: -webkit-linear-gradient(top, #03a9f4, #0a8abc);
+    background: -moz-linear-gradient(top, #03a9f4, #0a8abc);
+    background: -ms-radial-gradient(top, #03a9f4, #0a8abc);
+    background: -o-linear-gradient(top, #03a9f4, #0a8abc);
+    background: linear-gradient(top, #03a9f4, #0a8abc);*/
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     border: none;
+    background: url("/anime/img/info.svg");
     cursor: pointer;
     display: block;
     text-decoration: none;

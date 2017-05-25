@@ -74,7 +74,8 @@ var cardFunc = function (req, res) {
                     head_title: 'Image Labeling',
                     card_title: 'Introduction',
                     image_id: imageId,
-                    img: imgLink
+                    img: imgLink,
+                    source: rows[0].series
                 });
 
             });
@@ -89,7 +90,8 @@ var cardFunc = function (req, res) {
             head_title: 'Image Labeling',
             card_title: 'Anime or Cartoon',
             image_id: '0',
-            img: '/anime/img/aang.jpg'
+            img: '/anime/img/aang.jpg',
+            source: 'Avatar: The Last Airbender'
         });
     }
 };
