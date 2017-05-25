@@ -167,9 +167,7 @@
         [false, false, false, false]
     ];
     var tutorial = false;
-    // @formatter:off
-    var image_id = {{image_id}}; // image id currently being rated
-    // @formatter:on
+    var image_id = parseInt("{{image_id}}"); // image id currently being rated
 
     $(document).ready(function () {
         if (image_id !== 0) {
@@ -277,9 +275,6 @@
 
         // if tutorial
         if (tutorial) {
-            // todo implement tutorial
-            // change card_title
-
             // error message
             var error = "";
             if (answerText !== tutCheck[-image_id][0]) {
