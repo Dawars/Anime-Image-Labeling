@@ -87,13 +87,14 @@ var cardFunc = function (req, res) {
         // TODO add intro page by default
         res.render('card', {
             head_title: 'Image Labeling',
-            card_title: 'Introduction',
-            image_id: '-1',
+            card_title: 'Anime or Cartoon',
+            image_id: '0',
             img: '/anime/img/aang.jpg'
         });
     }
 };
-app.get('/anime/', cardFunc);
+app.get('/anime/', cardFunc); // intro, start
+// app.get('/anime/tutorial/:tutorial_id(\\d+)/', cardFunc); // tutorial
 app.get('/anime/:image_id(\\d+)/', cardFunc);
 
 var domain = "/anime/";
@@ -137,7 +138,23 @@ app.post('/anime/next_image', function (req, res) {
     var empty = req.body.empty;
     var logo = req.body.logo;
 
-    if (id !== '-1') {
+    if (id === undefined) {
+        console.error('id undefined in nextImage Post');
+        res.statusCode(404);
+        return;
+    }
+
+    if (parseInt(id) < 0) { // tutorial
+        console.log('Tutorial: ', id);
+
+        res.send({
+            id: id,
+            imgURL: domain + 'img/tutorial' + (-id) + '.jpg',
+            prevSave: true
+        })
+    } else if (parseInt(id) === 0) { // don't save
+        nextImageFunc(req, res, true); // redirect to get impl
+    } else { // save and next
 
         // check session
 
@@ -157,7 +174,7 @@ app.post('/anime/next_image', function (req, res) {
                 // if (err) throw err;
                 console.log('Inserted ', results.affectedRows, 'rows');
 
-                nextImageFunc(req, res, results.affectedRows > 0); // redirect to get impl
+                nextImageFunc(req, res, parseInt(results.affectedRows) > 0); // redirect to get impl
             });
             console.log(query.sql);
 
@@ -166,10 +183,7 @@ app.post('/anime/next_image', function (req, res) {
         } finally {
             connection.end();
         }
-    } else {
-        nextImageFunc(req, res, true); // redirect to get impl
     }
-
 });
 
 const root = './static/img/';

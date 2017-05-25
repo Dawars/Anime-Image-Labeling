@@ -18,6 +18,6 @@ app.get('/', function (req, res) {
 app.get('/getRandomImage', function (req, res) {
     res.send({
         id: 22,
-        imgURL: "http://animedata.azurewebsites.net/img/text.jpg"
+        imgURL: "http://animedata.azurewebsites.net/img/tutorial1.jpg"
     })
 });

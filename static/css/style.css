@@ -66,7 +66,7 @@ dialog {
     background-color: #00c853;
 }
 
-.correct, .correct p, .correct a, .incorrect, .incorrect p, .incorrect a, .incorrect button {
+.correct, .correct p, .correct a, .correct button, .incorrect, .incorrect p, .incorrect a, .incorrect button {
     color: #ffffff;
 }
 

@@ -25,43 +25,70 @@
                     <img id="image-elem" src="{{img}}" border="0" alt="" width="100%"/>
                 </div>
                 <div class="mdl-card__supporting-text">
-                    <p><strong>Select all that apply</strong><br/>
-                        The image contains...</p>
-                    <!--table of switches-->
-                    <div class="table">
-                        <div>
-                            <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                <input type="checkbox" id="switch_text" class="mdl-switch__input">
-                                <span class="mdl-switch__label">Text</span>
-                            </label>
+                    <div id="switches" style="display: none">
+                        <p id="description"><strong>Select all that apply</strong><br/>
+                            The image contains...</p>
+                        <!--table of switches-->
+                        <div class="table">
+                            <div>
+                                <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Text</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Character</span>
+                                </label>
+                            </div>
+
                         </div>
-                        <div>
-                            <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                <input type="checkbox" id="switch_character" class="mdl-switch__input">
-                                <span class="mdl-switch__label">Character</span>
-                            </label>
+                        <div class="table">
+                            <div>
+                                <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Logo</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                                    <span class="mdl-switch__label">Blank</span>
+                                </label>
+                            </div>
+
                         </div>
+                    </div>
+                    <div id="intro">
+                        I'm working on a program to distinguish between Anime and Cartoon based on their
+                        <i><strong>style</strong></i>.<br/>
+                        <br/>
+                        I'm using Deep Learning and I need a big dataset. I've collected a lot of images and now I need
+                        Your
+                        help to label it.<br/><br/>
 
                     </div>
-                    <div class="table">
-                        <div>
-                            <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                <input type="checkbox" id="switch_logo" class="mdl-switch__input">
-                                <span class="mdl-switch__label">Logo</span>
-                            </label>
-                        </div>
-                        <div>
-                            <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                <input type="checkbox" id="switch_empty" class="mdl-switch__input">
-                                <span class="mdl-switch__label">Blank</span>
-                            </label>
-                        </div>
+                    <div id="break" style="display: none">
+                        After finishing the dataset I'm going to publish it for everyone to use.<br/>
 
+                        <strong>Share with your friends too!</strong></br>
+                        <div class="fb-share-button" data-href="http://animedata.azurewebsites.net/"
+                             data-layout="button_count" data-size="large" data-mobile-iframe="true">
+                            <a class="fb-xfbml-parse-ignore" target="_blank"
+                               href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fdawars.me/anime%2F&amp;src=sdkpreparse">Share</a>
+                        </div>
+                        <a class="twitter-share-button"
+                           href="https://twitter.com/intent/tweet?text=Help%20us%20label%20this%20#anime%20#and%20cartoon%20dataset%20for%20#deeplearning"
+                           data-size="large">Tweet</a>
                     </div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
-                    <button class="mdl-button mdl-js-button mdl-button--primary float-right" id="next-button">
-                        Next
+                    <button class="mdl-button mdl-js-button mdl-button--primary" id="left-button">
+                        Tutorial
+                    </button>
+                    <button class="mdl-button mdl-js-button mdl-button--primary float-right" id="right-button">
+                        Start
                     </button>
                 </div>
             </div>
@@ -70,12 +97,12 @@
 </div>
 
 <dialog id="dialog-correct" class="mdl-dialog correct">
-    <h4 class="mdl-dialog__title" style="font-size: 31px;">Good job</h4>
+    <h4 id="correct_text" class="mdl-dialog__title" style="font-size: 31px;">Correct</h4>
     <div class="mdl-dialog__content">
-        <p><strong>Just one more.</strong></p>
+        <p><strong>You selected the right answer</strong></p>
     </div>
     <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button start float-right">Start</button>
+        <button type="button" class="mdl-button start float-right">Next</button>
 
     </div>
 </dialog>
@@ -85,7 +112,7 @@
         <p id="error-message"></p>
     </div>
     <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close float-right">Try again</button>
+        <button type="button" class="mdl-button close float-right">Close</button>
     </div>
 </dialog>
 <script src="js/dialog-polyfill.js"></script>
@@ -94,20 +121,32 @@
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
 <script>
+    var descriptions = ["",
+        "When you see any text e.g. writing, subtitles, cast in the picture, select <strong>Text</strong> below.",// -1
+        "When you see a character (person) in the image, select <strong>Character</strong> below.<br/> The head of the character must be visible.",// -2
+        "If you see the logo or watermark of a TV channel in the picture, select <strong>Logo</strong> below.",// -3
+        "If the image has no objects, or recognisable shapes in it, select <strong>Blank</strong> below.<br/>E.g. empty sky, noise (even with text or logo)",// -4
+        "<strong>Select all that apply</strong><br/>The image contains...",// -5
+        "<strong>Select all that apply</strong><br/>The image contains..."// -6
+    ];
+    var tutCheck = [[],
+        // text, char, logo, blank
+        [true, false, false, false],
+        [false, true, false, false],
+        [false, false, true, false],
+        [true, false, false, true],
+        [true, true, false, false],
+        [false, false, false, false]
+    ];
     var tutorial = false;
-    var introduction = true;
     // @formatter:off
     var image_id = {{image_id}}; // image id currently being rated
     // @formatter:on
 
     var image = $("#image-elem");
 
-    window.history.replaceState({ // save 1st image to history
-        "image_id": image_id,
-        "image_src": image.attr('src')
-    }, "", '/anime/' + image_id);
-
-    var nextButton = document.querySelector('#next-button');
+    var leftButton = $('#left-button');
+    var rightButton = $('#right-button');
 
     var dialog_correct = document.querySelector('#dialog-correct');
     var dialog_wrong = document.querySelector('#dialog-wrong');
@@ -115,7 +154,81 @@
     if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
     if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
-    $("#next-button").click(function () {
+    leftButton.click(function () {
+        // start tutorial
+        tutorial = true;
+        image_id = -1;
+
+        rightButton[0].MaterialButton.disable();
+        rightButton.text("Next");
+        $('#intro').hide();
+        $('#switches').show();
+        leftButton.hide();
+
+        getNextImage({
+            "id": image_id
+        });
+    });
+
+    function getNextImage(data) {
+        if (tutorial) {
+            $('#description').html(descriptions[-image_id]);
+        }
+
+        // reset switches
+        $('.mdl-js-switch').each(function (i, obj) {
+            obj.MaterialSwitch.off();
+            obj.MaterialSwitch.disable(); // disable switches until ajax arrives
+        });
+        rightButton[0].MaterialButton.disable();
+
+        $.ajax({
+            method: "POST",
+            url: "/anime/next_image",
+            dataType: "JSON",
+            data: data,
+            success: function (res) {
+                console.log(res);
+                image_id = res.id;
+                image.attr('src', res.imgURL);
+                image.on('load', function () {
+                    // enable switches when image is loaded
+                    $('.mdl-js-switch').each(function (i, obj) {
+                        obj.MaterialSwitch.enable();
+                    });
+                    // enable next button
+                    rightButton[0].MaterialButton.enable();
+                });
+                image.on('error', function () {
+                    // enable switches when image is loaded
+                    $('.mdl-js-switch').each(function (i, obj) {
+                        obj.MaterialSwitch.enable();
+                    });
+                    // enable next button
+                    rightButton[0].MaterialButton.enable();
+                    alert('Image failed to load :(');
+                });
+
+                // update browser link
+                /*window.history.pushState({
+                 "image_id": image_id,
+                 "image_src": image.attr('src')
+                 }, "", '/anime/' + image_id);
+                 */
+            },
+            error: function (data) {
+                console.log(data);
+                alert("Error during saving");
+                rightButton[0].MaterialButton.enable();
+
+            }
+
+        })
+    }
+
+    rightButton.click(function () {
+        leftButton.hide();
+
 
         var answerText = $("#switch_text").prop("checked");
         var answerChar = $("#switch_character").prop("checked");
@@ -127,85 +240,84 @@
             // todo implement tutorial
             // change card_title
 
-            var answer = answerText && answerChar && !answerEmpty && !answerLogo;
-            if (answer) {
+            // error message
+            var error = "";
+            if (answerText !== tutCheck[-image_id][0]) {
+                if (answerText)
+                    error += "The image does <strong>not</strong> contain text<br/>";
+                else
+                    error += "The image contains <strong>Text</strong><br/>";
+            }
+            if (answerChar !== tutCheck[-image_id][1]) {
+                if (answerChar)
+                    error += "The image contains <strong>no</strong> Character<br/>";
+                else
+                    error += "The image contains a <strong>Character</strong><br/>";
+            }
+            if (answerLogo !== tutCheck[-image_id][2]) {
+                if (answerLogo)
+                    error += "There is <strong>no</strong> Logo in the image<br/>";
+                else
+                    error += "The image contains a <strong>Logo</strong><br/>";
+            }
+            if (answerEmpty !== tutCheck[-image_id][3]) {
+                if (answerEmpty)
+                    error += "The image is <strong>not</strong> Empty<br/>";
+                else
+                    error += "The image is <strong>Empty</strong><br/>";
+            }
+
+            if (error === "") {
                 dialog_correct.showModal();
             } else {
-                // error message
-                var error = "";
-                if (!answerText) error += "The image contains <strong>Text</strong><br/>";
-                if (!answerChar) error += "The image contains a <strong>Character</strong><br/>";
-                if (answerLogo) error += "There is <strong>no</strong> Logo in the image<br/>";
-                if (answerEmpty) error += "The image is <strong>not</strong> Empty<br/>";
                 dialog_wrong.querySelector("#error-message").innerHTML = error;
                 dialog_wrong.showModal();
             }
+            return; // don't continue
+
         } else { // if not tutorial
 
-            //            TODO: blank and character cannot be both true
+            // TODO: blank and character cannot be both true
 
+            window.history.replaceState({ // save 1st image to history
+             "image_id": image_id,
+             "image_src": image.attr('src')
+             }, "", '/anime/' + image_id);
         }
-        // reset switches
-        $('.mdl-js-switch').each(function (i, obj) {
-            obj.MaterialSwitch.off();
-            obj.MaterialSwitch.disable(); // disable switches until ajax arrives
+
+        getNextImage({
+            "id": image_id,
+            "text": answerText,
+            "char": answerChar,
+            "empty": answerEmpty,
+            "logo": answerLogo
         });
-        nextButton.MaterialButton.disable();
-
-
-        $.ajax({
-            method: "POST",
-            url: "/anime/next_image",
-            dataType: "JSON",
-            data: {
-                "id": image_id,
-                "text": answerText,
-                "char": answerChar,
-                "empty": answerEmpty,
-                "logo": answerLogo
-            },
-            success: function (data) {
-                console.log(data);
-                image_id = data.id;
-                image.attr('src', data.imgURL);
-                image.on('load', function () {
-                    // enable switches when image is loaded
-                    $('.mdl-js-switch').each(function (i, obj) {
-                        obj.MaterialSwitch.enable();
-                    });
-                    // enable next button
-                    nextButton.MaterialButton.enable();
-                });
-
-                // update browser link
-                window.history.pushState({
-                    "image_id": image_id,
-                    "image_src": image.attr('src')
-                }, "", '/anime/' + image_id);
-
-            },
-            error: function (data) {
-                console.log(data);
-                alert("Error during saving");
-                nextButton.MaterialButton.enable();
-
-            }
-
-        });
-    });
+    })
+    ;
     dialog_wrong.querySelector('.close').addEventListener('click', function () {
         dialog_wrong.close();
     });
 
     dialog_correct.querySelector('.start').addEventListener('click', function () {
+        // check status of tutorial
+        // track tutorial progress
+        if (tutorial) {
+            if (image_id > -6) {
+                image_id--;
+            } else {
+                image_id = 0;
+                tutorial = false;
+            }
+        }
+        getNextImage({"id": image_id});
+
         dialog_correct.close();
-        // todo next tutorial
     });
     // back button replace img
-    window.onpopstate = function(event) {
-        image_id = event.state.image_id;
-        image.attr('src', event.state.image_src);
-    };
+    /*window.onpopstate = function (event) {
+     image_id = event.state.image_id;
+     image.attr('src', event.state.image_src);
+     };*/
 </script>
 
 </body>
