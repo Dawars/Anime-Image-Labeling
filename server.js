@@ -85,7 +85,6 @@ var cardFunc = function (req, res) {
             connection.end();
         }
     } else {
-        // TODO add intro page by default
         res.render('card', {
             head_title: 'Image Labeling',
             card_title: 'Anime or Cartoon',
@@ -119,6 +118,7 @@ var nextImageFunc = function (req, res, success) {
             res.send({
                 id: rows[0].image_id,
                 imgURL: domain + imgLink,
+                imgSrc: rows[0].series,
                 prevSave: success
             })
         });
@@ -152,6 +152,7 @@ app.post('/anime/next_image', function (req, res) {
         res.send({
             id: id,
             imgURL: domain + 'img/tutorial' + (-id) + '.jpg',
+            imgSrc: "Fullmetal Alchemist: Brotherhood",
             prevSave: true
         })
     } else if (parseInt(id) === 0) { // don't save
