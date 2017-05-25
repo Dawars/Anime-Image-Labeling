@@ -97,15 +97,15 @@
 </div>
 
 <dialog id="dialog-correct" class="mdl-dialog correct">
-    <h4 id="correct_text" class="mdl-dialog__title" style="font-size: 31px;">Correct</h4>
+    <h4 id="correct_text" class="mdl-dialog__title" style="font-size: 31px;"></h4>
     <div class="mdl-dialog__content">
-        <p><strong>You selected the right answer</strong></p>
     </div>
     <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button start float-right">Next</button>
+        <button type="button" class="mdl-button start float-right"></button>
 
     </div>
 </dialog>
+
 <dialog id="dialog-wrong" class="mdl-dialog incorrect">
     <h4 class="mdl-dialog__title" style="font-size: 31px;">Wrong answer</h4>
     <div class="mdl-dialog__content">
@@ -120,6 +120,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
+
 <script>
     var descriptions = ["",
         "When you see any text e.g. writing, subtitles, cast in the picture, select <strong>Text</strong> below.",// -1
@@ -128,6 +129,33 @@
         "If the image has no objects, or recognisable shapes in it, select <strong>Blank</strong> below.<br/>E.g. empty sky, noise (even with text or logo)",// -4
         "<strong>Select all that apply</strong><br/>The image contains...",// -5
         "<strong>Select all that apply</strong><br/>The image contains..."// -6
+    ];
+    var correctDiagContents = [{},
+        {
+            title: "Correct",
+            text: "<p>You selected the right answer</p>",
+            button: "Next"
+        }, {
+            title: "Great",
+            text: "<p>You selected the right answer</p>",
+            button: "Next"
+        }, {
+            title: "Awesome",
+            text: "<p>You selected the right answer</p>",
+            button: "Next"
+        }, {
+            title: "Correct",
+            text: "<p><strong>Now try one on your own</strong></p>",
+            button: "Next"
+        }, {
+            title: "Good job",
+            text: "<p><strong>Just one more.</strong></p>",
+            button: "Next"
+        }, {
+            title: "Good job",
+            text: "<p><strong>You have completed the tutorial.</strong><br/> Now starts the <i>real</i> challenge.</p>",
+            button: "Start"
+        },
     ];
     var tutCheck = [[],
         // text, char, logo, blank
@@ -268,6 +296,14 @@
             }
 
             if (error === "") {
+
+                var dialogCorrect = $('#dialog-correct');
+
+                var i = -image_id;
+                dialogCorrect.find('.mdl-dialog__title').text(correctDiagContents[i]["title"]);
+                dialogCorrect.find('.mdl-dialog__content').html(correctDiagContents[i]["text"]);
+                dialogCorrect.find('button.start').text(correctDiagContents[i]["button"]);
+
                 dialog_correct.showModal();
             } else {
                 dialog_wrong.querySelector("#error-message").innerHTML = error;
@@ -280,9 +316,9 @@
             // TODO: blank and character cannot be both true
 
             window.history.replaceState({ // save 1st image to history
-             "image_id": image_id,
-             "image_src": image.attr('src')
-             }, "", '/anime/' + image_id);
+                "image_id": image_id,
+                "image_src": image.attr('src')
+            }, "", '/anime/' + image_id);
         }
 
         getNextImage({
