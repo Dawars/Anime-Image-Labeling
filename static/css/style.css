@@ -73,3 +73,91 @@ dialog {
 .incorrect {
     background-color: #d50000;
 }
+
+#tooltip {
+    text-align: center;
+    color: #fff;
+    background: #111;
+    position: absolute;
+    z-index: 100;
+    padding: 15px;
+}
+
+/*#tooltip:after /* triangle decoration /
+{
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #111;
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    margin-left: -10px;
+}
+
+#tooltip.top:after {
+    border-top-color: transparent;
+    border-bottom: 10px solid #111;
+    top: -15px;
+    bottom: auto;
+}
+
+#tooltip.left:after {
+    left: 10px;
+    margin: 0;
+}
+
+#tooltip.right:after {
+    right: 10px;
+    left: auto;
+    margin: 0;
+}
+*/
+/*----------*/
+#info {
+    width: 28px;
+    height: 28px;
+    background-color: rgba(0, 0, 0, .05);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    padding: 5px;
+    /*margin: 0 auto 50px;*/
+    right: 16px;
+    position: absolute;
+}
+
+#info:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+#info abbr {
+    height: 100%;
+    font-size: 1.188em;
+    font-weight: bold;
+    line-height: 1.4;
+    text-align: center;
+    text-shadow: 0 1px rgba(0, 0, 0, .25);
+    color: #fff;
+    background: #84e100;
+    background: -webkit-gradient(linear, left top, left bottom, from(#84e100), to(#6fbc00));
+    background: -webkit-linear-gradient(top, #84e100, #6fbc00);
+    background: -moz-linear-gradient(top, #84e100, #6fbc00);
+    background: -ms-radial-gradient(top, #84e100, #6fbc00);
+    background: -o-linear-gradient(top, #84e100, #6fbc00);
+    background: linear-gradient(top, #84e100, #6fbc00);
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+
+}
+
+#info {
+    text-decoration: none;
+}
