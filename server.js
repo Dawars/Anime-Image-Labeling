@@ -26,7 +26,7 @@ const sqlQueryNext = 'SELECT image_id,filename,series.title,series.folder FROM i
     'JOIN (SELECT CEIL(RAND() * (SELECT MAX(image_id) FROM images)) AS id) AS r2 ' +
     'WHERE r1.image_id >= r2.id ' +
     'ORDER BY r1.image_id ASC ' +
-    'LIMIT 1';
+    'LIMIT 1'; // fixme remove 0 byte images
 /*
  const sqlQueryNext = 'SELECT images.image_id, series.title, series.folder, images.filename FROM images ' +
  'LEFT JOIN ratings USING(image_id) ' +
