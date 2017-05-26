@@ -72,17 +72,20 @@ var cardFunc = function (req, res) {
             connection.connect();
             connection.query(sqlQueryLink, [imageId], function (err, rows, fields) {
                 if (err) throw err;
+                var imgLink, source;
                 if (rows[0] === undefined) {
-                    res.status(404);
-                    return;
+                    imgLink = 'img/404.jpg';
+                    source = 'http://mangaonlinehere.com';
+                } else {
+                    imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
+                    source = rows[0].title;
                 }
-                var imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
                 res.render('card', {
                     head_title: 'Image Labeling',
                     card_title: 'Introduction',
                     image_id: imageId,
                     img: imgLink,
-                    source: rows[0].title
+                    source: source
                 });
 
             });
@@ -153,7 +156,6 @@ app.post('/anime/next_image', function (req, res) {
         res.statusCode(404);
         return;
     }
-
     if (parseInt(id) < 0) { // tutorial
         console.log('Tutorial: ', id);
 
@@ -177,6 +179,8 @@ app.post('/anime/next_image', function (req, res) {
             logo: logo === 'true' ? 1 : 0,
             empty: empty === 'true' ? 1 : 0
         };
+
+        // todo save user_id
         // save to db
         var connection = mysql.createConnection(config);
         try {
