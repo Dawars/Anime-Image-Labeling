@@ -1,8 +1,10 @@
 var express = require('express');
+
 var bodyParser = require('body-parser');
 var path = require('path');
-var mysql = require('mysql');
+
 var config = require('./db-config');
+var mysql = require('mysql');
 
 var app = express();
 
@@ -19,10 +21,12 @@ app.engine('html', require('hogan-express'));
 app.set('view engine', 'html');
 
 
-const sqlQueryNext = 'SELECT image.image_id, image.series, image.link FROM image ' +
-    'LEFT JOIN ratings ON image.image_id=ratings.image_id ' +
+const sqlQueryNext = 'SELECT images.image_id, series.series_id, series.title, series.folder, images.filename FROM images ' +
+    'LEFT JOIN ratings ON images.image_id=ratings.image_id ' +
+    'LEFT JOIN series ON images.series_id=series.series_id ' +
     'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id)';
-const sqlQueryLink = 'SELECT series, link FROM image ' +
+const sqlQueryLink = 'SELECT title, filename, folder FROM images ' +
+    'LEFT JOIN series ON images.series_id=series.series_id ' +
     'WHERE `image_id` = ?';
 const sqlInsertUser = 'INSERT IGNORE INTO users SET ?';
 const sqlInsertRating = 'INSERT INTO ratings SET ?';
@@ -69,13 +73,13 @@ var cardFunc = function (req, res) {
                     res.status(404);
                     return;
                 }
-                var imgLink = 'img/' + rows[0].series + '/' + rows[0].link;
+                var imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
                 res.render('card', {
                     head_title: 'Image Labeling',
                     card_title: 'Introduction',
                     image_id: imageId,
                     img: imgLink,
-                    source: rows[0].series
+                    source: rows[0].title
                 });
 
             });
@@ -109,19 +113,20 @@ var nextImageFunc = function (req, res, success) {
     var connection = mysql.createConnection(config);
     try {
         connection.connect();
-        connection.query(sqlQueryNext, function (err, rows, fields) {
+        var query = connection.query(sqlQueryNext, function (err, rows, fields) {
             if (err) throw err;
-            var imgLink = 'img/' + rows[0].series + '/' + rows[0].link;
+            var imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
 
             console.log('Image sent: ', imgLink);
 
             res.send({
                 id: rows[0].image_id,
                 imgURL: domain + imgLink,
-                imgSrc: rows[0].series,
+                imgSrc: rows[0].title,
                 prevSave: success
             })
         });
+        console.log(query.sql);
     } catch (e) {
         console.error(e);
     } finally {
@@ -166,16 +171,16 @@ app.post('/anime/next_image', function (req, res) {
             image_id: id,
             text: text === 'true' ? 1 : 0,
             person: char === 'true' ? 1 : 0,
-            empty: empty === 'true' ? 1 : 0,
-            logo: logo === 'true' ? 1 : 0
+            logo: logo === 'true' ? 1 : 0,
+            empty: empty === 'true' ? 1 : 0
         };
         // save to db
         var connection = mysql.createConnection(config);
         try {
             connection.connect();
             var query = connection.query(sqlInsertRating, vars, function (err, results, fields) {
-                // if (err) throw err;
-                console.log('Inserted ', results.affectedRows, 'rows');
+                if (err) throw err;
+                // console.log('Inserted ', results.affectedRows, 'rows');
 
                 nextImageFunc(req, res, parseInt(results.affectedRows) > 0); // redirect to get impl
             });
@@ -192,20 +197,27 @@ app.post('/anime/next_image', function (req, res) {
 const root = './static/img/';
 const fs = require('fs');
 
-const sqlInsertImages = 'INSERT INTO image (series, link, isanime) VALUES ?';
+const sqlInsertImages = 'INSERT INTO images (series_id, filename) VALUES ?';
 function uploadDir(dir) {
+    // create series row
+
     fs.readdir(root + dir, function (err, files) {
         // create array
         var images = [];
 
         files.forEach(function (file) {
-            var element = [dir, file, 1];
+            var element = ['LAST_INSERT_ID()', file];
             images.push(element);
         });
-        var connection = mysql.createConnection(config);
+
+        var multiConfig = require('./db-config');
+        multiConfig.multipleStatements = true;
+        var connection = mysql.createConnection(multiConfig);
         try {
             connection.connect();
-            var query = connection.query(sqlInsertImages, [images], function (err, results, fields) {
+            // var dir = connection.escape(dir);
+            var insertSeries = "INSERT INTO series (title, folder) VALUES ('" + dir + "', '" + dir + "');";
+            var query = connection.query(insertSeries + sqlInsertImages, [images], function (err, results, fields) {
                 if (err) throw err;
 
                 console.log(dir, ' inserted with ', results.affectedRows, ' / ' + images.length);
