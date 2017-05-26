@@ -21,11 +21,18 @@ app.engine('html', require('hogan-express'));
 app.set('view engine', 'html');
 
 app.enable('trust proxy');
-
-const sqlQueryNext = 'SELECT images.image_id, series.series_id, series.title, series.folder, images.filename FROM images ' +
-    'LEFT JOIN ratings ON images.image_id=ratings.image_id ' +
-    'LEFT JOIN series ON images.series_id=series.series_id ' +
-    'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id)';
+const sqlQueryNext = 'SELECT image_id,filename,series.title,series.folder FROM images AS r1 ' +
+    'JOIN series USING(series_id) ' +
+    'JOIN (SELECT CEIL(RAND() * (SELECT MAX(image_id) FROM images)) AS id) AS r2 ' +
+    'WHERE r1.image_id >= r2.id ' +
+    'ORDER BY r1.image_id ASC ' +
+    'LIMIT 1';
+/*
+ const sqlQueryNext = 'SELECT images.image_id, series.title, series.folder, images.filename FROM images ' +
+ 'LEFT JOIN ratings USING(image_id) ' +
+ 'LEFT JOIN series USING(series_id) ' +
+ 'GROUP BY ratings.image_id ORDER BY COUNT(ratings.rating_id) LIMIT 1';
+ */
 const sqlQueryLink = 'SELECT title, filename, folder FROM images ' +
     'LEFT JOIN series ON images.series_id=series.series_id ' +
     'WHERE `image_id` = ?';
@@ -244,7 +251,7 @@ function uploadDir(dir) {
                 console.log(dir + " saved");
 
             });
-            console.log(query.sql);
+            // console.log(query.sql);
         } catch (e) {
             console.error(e);
         } finally {
