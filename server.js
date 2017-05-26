@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.engine('html', require('hogan-express'));
 app.set('view engine', 'html');
 
+app.enable('trust proxy');
 
 const sqlQueryNext = 'SELECT images.image_id, series.series_id, series.title, series.folder, images.filename FROM images ' +
     'LEFT JOIN ratings ON images.image_id=ratings.image_id ' +
@@ -30,6 +31,10 @@ const sqlQueryLink = 'SELECT title, filename, folder FROM images ' +
     'WHERE `image_id` = ?';
 const sqlInsertUser = 'INSERT IGNORE INTO users SET ?';
 const sqlInsertRating = 'INSERT INTO ratings SET ?';
+
+function strEndsWith(str, suffix) {
+    return str.match(suffix + "$") == suffix;
+}
 
 function insertUser(ip) {
     var vars = {ip: ip};
@@ -47,8 +52,6 @@ function insertUser(ip) {
         connection.end();
     }
 }
-
-app.enable('trust proxy');
 
 // url handling
 var cardFunc = function (req, res) {
@@ -197,31 +200,44 @@ app.post('/anime/next_image', function (req, res) {
 const root = './static/img/';
 const fs = require('fs');
 
-const sqlInsertImages = 'INSERT INTO images (series_id, filename) VALUES ?';
 function uploadDir(dir) {
+    var sqlInsertImages = 'INSERT INTO images (series_id, filename) VALUES ';
+
     // create series row
-
+    console.log('processing dir ' + dir);
     fs.readdir(root + dir, function (err, files) {
-        // create array
-        var images = [];
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (strEndsWith(file.toLowerCase(), '.jpg') || strEndsWith(file.toLowerCase(), '.jpeg')) {
+                sqlInsertImages += "(LAST_INSERT_ID(),'" + file + "')";
+                if (i !== files.length - 1) {
+                    sqlInsertImages += ',';
+                }
+            }
+        }
 
-        files.forEach(function (file) {
-            var element = ['LAST_INSERT_ID()', file];
-            images.push(element);
-        });
-
+        var insertSeries = "INSERT IGNORE INTO series (title, folder) VALUES('" + dir + "','" + dir + "');";
+        // write query
+        /* fs.writeFile(root + dir + "/_insert.sql", insertSeries + sqlInsertImages, function (err) {
+         if (err) {
+         console.log(err);
+         return;
+         }
+         console.log(dir + " query saved");
+         });*/
         var multiConfig = require('./db-config');
         multiConfig.multipleStatements = true;
         var connection = mysql.createConnection(multiConfig);
         try {
             connection.connect();
-            // var dir = connection.escape(dir);
-            var insertSeries = "INSERT INTO series (title, folder) VALUES ('" + dir + "', '" + dir + "');";
-            var query = connection.query(insertSeries + sqlInsertImages, [images], function (err, results, fields) {
+            var query = connection.query(insertSeries + sqlInsertImages, function (err, results, fields) {
                 if (err) throw err;
 
-                console.log(dir, ' inserted with ', results.affectedRows, ' / ' + images.length);
-                // todo add check file when dir/file already done
+                console.log(dir, ' inserted (probably) ', files.length, ' rows');
+                // add check file when dir/file already done
+                fs.appendFileSync(root + 'saved_series.txt', dir);
+
+                console.log(dir + " saved");
 
             });
             console.log(query.sql);
@@ -234,12 +250,19 @@ function uploadDir(dir) {
 }
 app.get('/anime/update', function (req, res) {
 
+    // read done file in sync
+    var done = fs.readFileSync(root + 'saved_series.txt').toString().split("\n");
+
+
     fs.readdir(root, function (err, files) {
-        files.forEach(function (file) {
-            if (fs.statSync(root + file).isDirectory()) {
-                uploadDir(file);
+        for (var i = 0; i < files.length; i++) {
+            var dir = files[i];
+            if (done.indexOf(dir) === -1) { // not already processed
+                if (fs.statSync(root + dir).isDirectory()) {
+                    uploadDir(dir);
+                }
             }
-        });
+        }
     });
     res.send('done');
 });
