@@ -7,7 +7,7 @@ The latest version is available at: http://dawars.me/anime
 
 - - -
 
-
+## Table of Content
 - [Progress](#progress)
 - [Browser support](#browser-support)
 - [Features](#features)
@@ -27,27 +27,27 @@ The latest version is available at: http://dawars.me/anime
 | IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
 
-# Features:
-## Tutorial
+## Features:
+### Tutorial
 ![Tutorial](img/tutorial.png?raw=true "Tutorial")
 
 ![Correct answer](img/correct.png?raw=true "Correct answer")
 ![Wrong answer](img/wrong.png?raw=true "Wrong answer")
 
-## 404 page
+### 404 page
 ![Tutorial](img/not_found.png?raw=true "Tutorial")
 
-## Source
+### Source
 ![Tutorial](img/tooltip.png?raw=true "Tutorial")
 
-# Used technologies
+## Used technologies
 
-## Front-end
+### Front-end
 - jQuery
 - [Material Design Light](https://github.com/google/material-design-lite)
 - dialog-polyfill.js - `<dialog>` tag
 
-## Back-end
+### Back-end
 * Node.js (with IIS7)
 * Express
     * body-parser
