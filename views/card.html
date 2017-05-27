@@ -186,8 +186,8 @@
     var dialog_correct = document.querySelector('#dialog-correct');
     var dialog_wrong = document.querySelector('#dialog-wrong');
 
-    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
-    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
+//    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
+//    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
     leftButton.click(function () {
         // start tutorial
@@ -316,10 +316,10 @@
                 dialogCorrect.find('.mdl-dialog__content').html(correctDiagContents[i]["text"]);
                 dialogCorrect.find('button.start').text(correctDiagContents[i]["button"]);
 
-                dialog_correct.showModal();
+                dialog_correct.show();
             } else {
                 dialog_wrong.querySelector("#error-message").innerHTML = error;
-                dialog_wrong.showModal();
+                dialog_wrong.show();
             }
             return; // don't continue
 
