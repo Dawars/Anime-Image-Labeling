@@ -80,16 +80,18 @@ var cardFunc = function (req, res) {
             connection.query(sqlQueryLink, [imageId], function (err, rows, fields) {
                 if (err) throw err;
                 var imgLink, source;
+                var cardTitle = 'Introduction';
+
                 if (rows[0] === undefined) {
                     imgLink = 'img/404.jpg';
                     source = 'http://mangaonlinehere.com';
+                    cardTitle ='Image not found'
                 } else {
                     imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
                     source = rows[0].title;
-                }
-                res.render('card', {
+                }res.render('card', {
                     head_title: 'Image Labeling',
-                    card_title: 'Introduction',
+                    card_title: cardTitle,
                     image_id: imageId,
                     img: imgLink,
                     source: source
