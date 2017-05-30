@@ -26,7 +26,7 @@ const sqlQueryNext = 'SELECT image_id,filename,series.title,series.folder FROM i
     'JOIN (SELECT CEIL(RAND() * (SELECT MAX(image_id) FROM images)) AS id) AS r2 ' +
     'WHERE r1.image_id >= r2.id ' +
     'ORDER BY r1.image_id ASC ' +
-    'LIMIT 1'; // fixme remove 0 byte images
+    'LIMIT 1';
 /*
  const sqlQueryNext = 'SELECT images.image_id, series.title, series.folder, images.filename FROM images ' +
  'LEFT JOIN ratings USING(image_id) ' +
@@ -80,7 +80,7 @@ var cardFunc = function (req, res) {
             connection.query(sqlQueryLink, [imageId], function (err, rows, fields) {
                 if (err) throw err;
                 var imgLink, source;
-                var cardTitle = 'Introduction';
+                var cardTitle = 'Labeling images';
 
                 if (rows[0] === undefined) {
                     imgLink = 'img/404.jpg';
@@ -109,7 +109,7 @@ var cardFunc = function (req, res) {
             card_title: 'Anime or Cartoon',
             image_id: '0',
             img: '/anime/img/aang.jpg',
-            source: 'Avatar: The Last Airbender'
+            source: ' Avatar: The Last Airbender'
         });
     }
 };

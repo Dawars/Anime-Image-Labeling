@@ -186,8 +186,8 @@
     var dialog_correct = document.querySelector('#dialog-correct');
     var dialog_wrong = document.querySelector('#dialog-wrong');
 
-//    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
-//    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
+    if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
+    if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
     leftButton.click(function () {
         // start tutorial
@@ -228,7 +228,6 @@
             success: function (res) {
                 console.log(res);
                 image_id = res.id;
-                console.log("setting source to " + res.imgSrc);
                 $('#info').find('abbr').attr('title', "<strong>Source: </strong> " + res.imgSrc);
 
                 image.attr('src', res.imgURL);
@@ -251,11 +250,14 @@
                 });
 
                 // update browser link
-                /*window.history.pushState({
-                 "image_id": image_id,
-                 "image_src": image.attr('src')
-                 }, "", '/anime/' + image_id);
-                 */
+                if (image_id > 0) {
+                    window.history.pushState({
+                        "source": res.imgSrc,
+                        "image_id": image_id,
+                        "image_src": image.attr('src')
+                    }, "", '/anime/' + image_id);
+                }
+
             },
             error: function (data) {
                 console.log(data);
@@ -316,23 +318,22 @@
                 dialogCorrect.find('.mdl-dialog__content').html(correctDiagContents[i]["text"]);
                 dialogCorrect.find('button.start').text(correctDiagContents[i]["button"]);
 
-                dialog_correct.show();
+                dialog_correct.showModal();
             } else {
                 dialog_wrong.querySelector("#error-message").innerHTML = error;
-                dialog_wrong.show();
+                dialog_wrong.showModal();
             }
             return; // don't continue
 
         } else { // if not tutorial
 
             // TODO: blank and character cannot be both true
-
             window.history.replaceState({ // save 1st image to history
+                "source": $('#info').find('abbr').attr('title').substring(26),
                 "image_id": image_id,
                 "image_src": image.attr('src')
-            }, "", '/anime/' + image_id);
+            }, "", '/anime/' + (image_id > 0 ? image_id : ''));
         }
-
         getNextImage({
             "id": image_id,
             "text": answerText,
@@ -361,11 +362,11 @@
 
         dialog_correct.close();
     });
-    // fixme back button replace img
-    /*window.onpopstate = function (event) {
-     image_id = event.state.image_id;
-     image.attr('src', event.state.image_src);
-     };*/
+    window.onpopstate = function (event) {
+        $('#info').find('abbr').attr('title', "<strong>Source: </strong> " + event.state.source);
+        image_id = event.state.image_id;
+        image.attr('src', event.state.image_src);
+    };
 </script>
 <script>$(function () {
     var targets = $('[rel~=tooltip]'),
