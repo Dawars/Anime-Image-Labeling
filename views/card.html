@@ -33,13 +33,13 @@
                         <div class="table">
                             <div>
                                 <label for="switch_text" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_text" class="mdl-switch__input">
+                                    <input type="checkbox" id="switch_text" name="text" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Text</span>
                                 </label>
                             </div>
                             <div>
                                 <label for="switch_character" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_character" class="mdl-switch__input">
+                                    <input type="checkbox" id="switch_character" name="char" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Character</span>
                                 </label>
                             </div>
@@ -48,13 +48,13 @@
                         <div class="table">
                             <div>
                                 <label for="switch_logo" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_logo" class="mdl-switch__input">
+                                    <input type="checkbox" id="switch_logo" name="logo" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Logo</span>
                                 </label>
                             </div>
                             <div>
                                 <label for="switch_empty" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-                                    <input type="checkbox" id="switch_empty" class="mdl-switch__input">
+                                    <input type="checkbox" id="switch_empty" name="empty" class="mdl-switch__input">
                                     <span class="mdl-switch__label">Blank</span>
                                 </label>
                             </div>
@@ -88,6 +88,7 @@
                     <button class="mdl-button mdl-js-button mdl-button--primary" id="left-button">
                         Tutorial
                     </button>
+
                     <button class="mdl-button mdl-js-button mdl-button--primary float-right" id="right-button">
                         Start
                     </button>
@@ -169,15 +170,6 @@
     var tutorial = false;
     var image_id = parseInt("{{image_id}}"); // image id currently being rated
 
-    $(document).ready(function () {
-        if (image_id !== 0) {
-            rightButton.text("Next");
-            $('#intro').hide();
-            $('#switches').show();
-            leftButton.hide();
-        }
-    });
-
     var image = $("#image-elem");
 
     var leftButton = $('#left-button');
@@ -189,16 +181,30 @@
     if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
     if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
+    $(function () {
+        if (image_id !== 0) {
+            rightButton.text("Next");
+            $('#intro').hide();
+            $('#switches').show();
+            leftButton.hide();
+        }
+        if (getCookieData("tutorial_finished") === 'true') {
+            rightButton.show();
+        } else {
+            rightButton.hide();
+        }
+    });
+
     leftButton.click(function () {
         // start tutorial
         tutorial = true;
         image_id = -1;
 
-        rightButton[0].MaterialButton.disable();
         rightButton.text("Next");
         $('#intro').hide();
         $('#switches').show();
         leftButton.hide();
+        rightButton.show();
 
         getNextImage({
             "id": image_id
@@ -261,7 +267,7 @@
             },
             error: function (data) {
                 console.log(data);
-                alert("Error during saving");
+                alert("Error during saving\n" + data);
                 rightButton[0].MaterialButton.enable();
 
             }
@@ -356,6 +362,8 @@
             } else {
                 image_id = 0;
                 tutorial = false;
+                // set cookie
+                document.cookie = "tutorial_finished=true;path=/anime/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
             }
         }
         getNextImage({"id": image_id});
@@ -367,6 +375,16 @@
         image_id = event.state.image_id;
         image.attr('src', event.state.image_src);
     };
+    function getCookieData(name) {
+        var pairs = document.cookie.split("; "),
+            count = pairs.length, parts;
+        while (count--) {
+            parts = pairs[count].split("=");
+            if (parts[0] === name)
+                return parts[1];
+        }
+        return false;
+    }
 </script>
 <script>$(function () {
     var targets = $('[rel~=tooltip]'),
