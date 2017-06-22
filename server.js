@@ -1,6 +1,8 @@
 var express = require('express');
+var session = require('express-session');
 
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var path = require('path');
 
 var config = require('./db-config');
@@ -15,6 +17,7 @@ app.use('/anime/iisnode', express.static('iisnode')); // debug only
 // parse application/json
 // app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
 // set up template engine
 app.engine('html', require('hogan-express'));
@@ -43,8 +46,11 @@ function strEndsWith(str, suffix) {
     return str.match(suffix + "$") == suffix;
 }
 
-function insertUser(ip) {
-    var vars = {ip: ip};
+function insertUser(req) {
+
+    var ip = req.headers['x-forwarded-for'];
+
+    var vars = {ip: ip, user_id: req.cookies['user_id']};
     var connection = mysql.createConnection(config);
     try {
         connection.connect();
@@ -62,10 +68,9 @@ function insertUser(ip) {
 
 // url handling
 var cardFunc = function (req, res) {
+
     // add new user
-    var ip = req.headers['x-forwarded-for'];
-    console.log(ip);
-    insertUser(ip);
+    insertUser(req);
 
     // init session
 
@@ -85,11 +90,12 @@ var cardFunc = function (req, res) {
                 if (rows[0] === undefined) {
                     imgLink = 'img/404.jpg';
                     source = 'http://mangaonlinehere.com';
-                    cardTitle ='Image not found'
+                    cardTitle = 'Image not found'
                 } else {
                     imgLink = 'img/' + rows[0].folder + '/' + rows[0].filename;
                     source = rows[0].title;
-                }res.render('card', {
+                }
+                res.render('card', {
                     head_title: 'Image Labeling',
                     card_title: cardTitle,
                     image_id: imageId,
@@ -181,24 +187,31 @@ app.post('/anime/next_image', function (req, res) {
         // check session
 
         // convert values
+        var cookie = req.cookies['user_id'];
+        console.log('Cookie: ' + cookie);
         var vars = {
             image_id: id,
             text: text === 'true' ? 1 : 0,
             person: char === 'true' ? 1 : 0,
             logo: logo === 'true' ? 1 : 0,
-            empty: empty === 'true' ? 1 : 0
+            empty: empty === 'true' ? 1 : 0,
+            user_id: cookie
         };
 
-        // todo save user_id
+        // todo save user_id from random cookie
         // save to db
         var connection = mysql.createConnection(config);
         try {
             connection.connect();
             var query = connection.query(sqlInsertRating, vars, function (err, results, fields) {
-                if (err) throw err;
-                // console.log('Inserted ', results.affectedRows, 'rows');
+                if (err) {
 
+                    nextImageFunc(req, res, false); // redirect to get impl
+                    return;
+                }
                 nextImageFunc(req, res, parseInt(results.affectedRows) > 0); // redirect to get impl
+
+                // console.log('Inserted ', results.affectedRows, 'rows');
             });
             console.log(query.sql);
 

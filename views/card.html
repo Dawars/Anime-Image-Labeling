@@ -11,9 +11,60 @@
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/dialog-polyfill.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <meta name="description" content="Help us train a Neural Network to find out"/>
+    <meta name="robots" content="noodp"/>
+    <link rel="canonical" href="http://dawars.me/anime"/>
+    <meta property="og:locale" content="en_US"/>
+    <link rel="me" href="https://twitter.com/dawars00">
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Anime or Cartoon?"/>
+    <meta property="og:description" content="Help us train a Neural Network to find out"/>
+    <meta property="og:url" content="http://dawars.me/anime"/>
+    <meta property="og:site_name" content="Anime or Cartoon?"/>
+    <meta property="fb:app_id" content="245091309216121"/>
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="Help us train a Neural Network to find out"/>
+    <meta name="twitter:title" content="Anime or Cartoon?"/>
+    <meta name="twitter:site" content="@dawars00"/>
+    <meta name="twitter:image" content="http://dawars.me/anime/img/aang.jpg">
+    <script type='application/ld+json'>
+        {"@context":"http:\/\/schema.org","@type":"WebSite","@id":"#website","url":"http:\/\/dawars.me\/anime","name":"Anime or Cartoon"}
+
+
+    </script>
+    <script type='application/ld+json'>
+        {"@context":"http:\/\/schema.org","@type":"Person","url":"http:\/\/dawars.me\/anime","sameAs":["https:\/\/www.facebook.com\/dawarsblog\/","https:\/\/www.instagram.com\/dawars00\/","https:\/\/twitter.com\/dawars00"],"@id":"#person","name":"Dawars"}
+
+
+    </script>
 </head>
 
 <body>
+<script>window.twttr = (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+    if (d.getElementById(id)) return t;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://platform.twitter.com/widgets.js";
+    fjs.parentNode.insertBefore(js, fjs);
+
+    t._e = [];
+    t.ready = function (f) {
+        t._e.push(f);
+    };
+
+    return t;
+}(document, "script", "twitter-wjs"));</script>
+<div id="fb-root"></div>
+<script>(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.9&appId=245091309216121";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div class="mdl-layout mdl-js-layout">
     <main class="mdl-layout__content">
         <div class="page-content">
@@ -71,17 +122,20 @@
 
                     </div>
                     <div id="break" style="display: none">
-                        After finishing the dataset I'm going to publish it for everyone to use.<br/>
+                        <p>After finishing the dataset I'm going to publish it for everyone to use.</p>
+                        <strong>If you like this project help us and share it with your friends too!</strong></br>
 
-                        <strong>Share with your friends too!</strong></br>
-                        <div class="fb-share-button" data-href="http://animedata.azurewebsites.net/"
-                             data-layout="button_count" data-size="large" data-mobile-iframe="true">
-                            <a class="fb-xfbml-parse-ignore" target="_blank"
-                               href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fdawars.me/anime%2F&amp;src=sdkpreparse">Share</a>
+                        <br/>
+                        <div class=" float-left"><a class="twitter-share-button"
+                                                    href="https://twitter.com/intent/tweet?text=#Anime%20or%20#Cartoon%3F%20Help%20us%20train%20a%20#NeuralNetwork%20to%20find%20out"
+                                                    data-size="large">Tweet</a>
                         </div>
-                        <a class="twitter-share-button"
-                           href="https://twitter.com/intent/tweet?text=Help%20us%20label%20this%20#anime%20#and%20cartoon%20dataset%20for%20#deeplearning"
-                           data-size="large">Tweet</a>
+                        <div class="fb-share-button float-left" data-href="http://dawars.me/anime/"
+                             data-layout="button_count"
+                             data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore"
+                                                                            target="_blank"
+                                                                            href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fdawars.me%2Fanime%2F&amp;src=sdkpreparse">Share</a>
+                        </div>
                     </div>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
@@ -125,9 +179,9 @@
 <script>
     var descriptions = ["",
         "When you see any text e.g. writing, subtitles, cast in the picture, select <strong>Text</strong> below.",// -1
-        "When you see a character (person) in the image, select <strong>Character</strong> below.<br/> The head of the character must be visible.",// -2
+        "When you see a character (person, monster, mech) in the image, select <strong>Character</strong> below.<br/> The head of the character must be visible.",// -2
         "If you see the logo or watermark of a TV channel in the picture, select <strong>Logo</strong> below.",// -3
-        "If the image has no objects, or recognisable shapes in it, select <strong>Blank</strong> below.<br/>E.g. empty sky, noise (even with text or logo)",// -4
+        "If the image has no objects, or recognisable shapes in it, select <strong>Blank</strong> below.<br/>E.g. empty sky, noise, blur (even with text or logo)",// -4
         "<strong>Select all that apply</strong><br/>The image contains...",// -5
         "<strong>Select all that apply</strong><br/>The image contains..."// -6
     ];
@@ -181,14 +235,22 @@
     if (!dialog_correct.showModal) dialogPolyfill.registerDialog(dialog_correct);
     if (!dialog_wrong.showModal) dialogPolyfill.registerDialog(dialog_wrong);
 
+    var num_vote = 0; // if 10 display share
     $(function () {
+
+        if (getCookieData("user_id") == null) {
+            var user_id = Math.floor((Math.random() * 10000000) + 1);
+
+            document.cookie = "user_id=" + user_id + ";path=/anime/;expires=Fri, 31 Dec 9999 23:59:59 GMT";
+        }
+
         if (image_id !== 0) {
             rightButton.text("Next");
             $('#intro').hide();
             $('#switches').show();
             leftButton.hide();
         }
-        if (getCookieData("tutorial_finished") === 'true') {
+        if (getCookieData("tutorial_finished") !== null) {
             rightButton.show();
         } else {
             rightButton.hide();
@@ -236,7 +298,17 @@
                 image_id = res.id;
                 $('#info').find('abbr').attr('title', "<strong>Source: </strong> " + res.imgSrc);
 
-                image.attr('src', res.imgURL);
+                image.on('error', function (error) {
+                    // enable switches when image is loaded
+                    $('.mdl-js-switch').each(function (i, obj) {
+                        obj.MaterialSwitch.disable();
+                    });
+                    // enable next button
+                    rightButton[0].MaterialButton.enable();
+                    $(this).attr("src", "http://dawars.me/anime/img/404.jpg");
+                    image_id = 0;
+                }).attr('src', res.imgURL);
+
                 image.on('load', function () {
                     // enable switches when image is loaded
                     $('.mdl-js-switch').each(function (i, obj) {
@@ -244,15 +316,6 @@
                     });
                     // enable next button
                     rightButton[0].MaterialButton.enable();
-                });
-                image.on('error', function () {
-                    // enable switches when image is loaded
-                    $('.mdl-js-switch').each(function (i, obj) {
-                        obj.MaterialSwitch.enable();
-                    });
-                    // enable next button
-                    rightButton[0].MaterialButton.enable();
-                    alert('Image failed to load :(');
                 });
 
                 // update browser link
@@ -267,7 +330,10 @@
             },
             error: function (data) {
                 console.log(data);
-                alert("Error during saving\n" + data);
+                alert("Error during the saving of choices\n");
+                $('.mdl-js-switch').each(function (i, obj) {
+                    obj.MaterialSwitch.enable();
+                });
                 rightButton[0].MaterialButton.enable();
 
             }
@@ -279,7 +345,9 @@
         leftButton.hide();
         rightButton.text("Next");
         $('#intro').hide();
+        $('#break').hide();
         $('#switches').show();
+        image.show();
 
         var answerText = $("#switch_text").prop("checked");
         var answerChar = $("#switch_character").prop("checked");
@@ -310,9 +378,9 @@
             }
             if (answerEmpty !== tutCheck[-image_id][3]) {
                 if (answerEmpty)
-                    error += "The image is <strong>not</strong> Empty<br/>";
+                    error += "The image is <strong>not</strong> Blank<br/>";
                 else
-                    error += "The image is <strong>Empty</strong><br/>";
+                    error += "The image is <strong>Blank</strong><br/>";
             }
 
             if (error === "") {
@@ -329,26 +397,39 @@
                 dialog_wrong.querySelector("#error-message").innerHTML = error;
                 dialog_wrong.showModal();
             }
-            return; // don't continue
 
         } else { // if not tutorial
 
-            // TODO: blank and character cannot be both true
-            window.history.replaceState({ // save 1st image to history
-                "source": $('#info').find('abbr').attr('title').substring(26),
-                "image_id": image_id,
-                "image_src": image.attr('src')
-            }, "", '/anime/' + (image_id > 0 ? image_id : ''));
+            num_vote++;
+            if (num_vote === 10) {
+                $('.mdl-card__title-text').text("Take a break");
+
+                //hide img and stuff
+                //display share
+                $('#break').show();
+                $('#switches').hide();
+                image.hide();
+
+            } else {
+                // todo new logo img
+                // todo new useless label
+                // todo humanoid and monster and mech
+                window.history.replaceState({ // save 1st image to history
+                    "source": $('#info').find('abbr').attr('title').substring(26),
+                    "image_id": image_id,
+                    "image_src": image.attr('src')
+                }, "", '/anime/' + (image_id > 0 ? image_id : ''));
+                getNextImage({
+                    "id": image_id,
+                    "text": answerText,
+                    "char": answerChar,
+                    "empty": answerEmpty,
+                    "logo": answerLogo
+                });
+            }
         }
-        getNextImage({
-            "id": image_id,
-            "text": answerText,
-            "char": answerChar,
-            "empty": answerEmpty,
-            "logo": answerLogo
-        });
-    })
-    ;
+    });
+
     dialog_wrong.querySelector('.close').addEventListener('click', function () {
         dialog_wrong.close();
     });
@@ -376,14 +457,23 @@
         image.attr('src', event.state.image_src);
     };
     function getCookieData(name) {
-        var pairs = document.cookie.split("; "),
-            count = pairs.length, parts;
-        while (count--) {
-            parts = pairs[count].split("=");
-            if (parts[0] === name)
-                return parts[1];
+        var dc = document.cookie;
+        var prefix = name + "=";
+        var begin = dc.indexOf("; " + prefix);
+        if (begin == -1) {
+            begin = dc.indexOf(prefix);
+            if (begin != 0) return null;
         }
-        return false;
+        else {
+            begin += 2;
+            var end = document.cookie.indexOf(";", begin);
+            if (end == -1) {
+                end = dc.length;
+            }
+        }
+        // because unescape has been deprecated, replaced with decodeURI
+        //return unescape(dc.substring(begin + prefix.length, end));
+        return decodeURI(dc.substring(begin + prefix.length, end));
     }
 </script>
 <script>$(function () {
@@ -454,6 +544,21 @@
         tooltip.bind('click', remove_tooltip);
     });
 });
+(function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+ga('create', 'UA-78858800-1', 'auto');
+ga('send', 'pageview');
+
 </script>
 </body>
 

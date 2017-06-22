@@ -50,6 +50,9 @@ div.table > div {
 .float-right {
     float: right;
 }
+.float-left {
+    float: left;
+}
 
 .mdl-button {
     width: 96px;
