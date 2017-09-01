@@ -12,7 +12,7 @@ var app = express();
 
 // map static resources to url
 app.use('/anime/', express.static('static'));
-app.use('/anime/iisnode', express.static('iisnode')); // debug only
+// app.use('/anime/iisnode', express.static('iisnode')); // debug only
 
 // parse application/json
 // app.use(bodyParser.json());
@@ -46,11 +46,24 @@ function strEndsWith(str, suffix) {
     return str.match(suffix + "$") == suffix;
 }
 
-function insertUser(req) {
+function insertUser(req, res) {
 
+    // cookie
+    var cookie = req.cookies.user_id;
+    var user_id = -1;
+    if (cookie === undefined) {
+        user_id = Math.floor((Math.random() * 10000000) + 1);
+
+        res.cookie('user_id', user_id, {maxAge: 900000, httpOnly: true});
+    } else {
+        user_id = cookie;
+    }
+    console.log(user_id);
+
+    // ip
     var ip = req.headers['x-forwarded-for'];
 
-    var vars = {ip: ip, user_id: req.cookies['user_id']};
+    var vars = {ip: ip, user_id: user_id};
     var connection = mysql.createConnection(config);
     try {
         connection.connect();
@@ -70,7 +83,7 @@ function insertUser(req) {
 var cardFunc = function (req, res) {
 
     // add new user
-    insertUser(req);
+    insertUser(req, res);
 
     // init session
 
@@ -274,8 +287,10 @@ function uploadDir(dir) {
         }
     });
 }
-app.get('/anime/update', function (req, res) {
 
+app.get('/anime/update', function (req, res) {
+    res.send('this function is disabled, it can only be run once');
+    return;
     // read done file in sync
     var done = fs.readFileSync(root + 'saved_series.txt').toString().split("\n");
 
